@@ -1,0 +1,15 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+
+<h2>Contribution: {{ contribution }}</h2>
+<hr>
+<p><strong>First Name:</strong> {{ person.first_name }}</p>
+<p><strong>Last Name:</strong> {{ person.last_name }}</p>
+<!--p><strong>Affiliation(s):</strong> {{ person.affiliation.all|join:'<br>' }}</p-->
+<!--p><strong>Email:</strong> {{ person.email_address }}</p-->
+<p><strong>Orcid:</strong> {{ person.orcid }}</p>
+
+<hr>
+
+{% endblock %}
