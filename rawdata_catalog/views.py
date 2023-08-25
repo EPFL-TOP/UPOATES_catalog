@@ -70,7 +70,7 @@ def rawdataset_catalog(request):
     if os.path.exists('/Users/helsens/Software/github/EPFL-TOP/UPOATES_catalog/metadatasummary_2023-08-24_17:39:01.045292_latest.json'):
         metadata_file = open('/Users/helsens/Software/github/EPFL-TOP/UPOATES_catalog/metadatasummary_2023-08-24_17:39:01.045292_latest.json')
     else:
-        metadata_file = open('/home/clement/Software/UPOATES_catalog/metadatasummary_2023-08-06_15:59:42.191884_latest.json')
+        metadata_file = open('/home/clement/Software/UPOATES_catalog/metadatasummary_2023-08-24_17:39:01.045292_latest.json')
     metadata = json.load(metadata_file)
     data_list = metadata['data']
     n_newdatasets=0
