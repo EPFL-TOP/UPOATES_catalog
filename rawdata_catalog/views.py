@@ -173,7 +173,7 @@ def rawdataset_catalog(request):
         rawdata_dict[e["data_type"]]['datasets']=newlist
     
 
-
+    plt.rcParams['figure.figsize'] = [15, 4]
     fig, ax = plt.subplots()
 
     fig.subplots_adjust(right=0.75)
@@ -203,7 +203,6 @@ def rawdataset_catalog(request):
 
     fig.tight_layout()
     fig = plt.gcf()
-    plt.rcParams['figure.figsize'] = [15, 4]
     buf = io.BytesIO()
     fig.savefig(buf, format='png')
     buf.seek(0)
@@ -240,7 +239,6 @@ def rawdataset_catalog(request):
 
     fig.tight_layout()
     fig = plt.gcf()
-    plt.rcParams['figure.figsize'] = [15, 4]
     buf = io.BytesIO()
     fig.savefig(buf, format='png')
     buf.seek(0)
