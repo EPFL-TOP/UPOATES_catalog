@@ -1,0 +1,64 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+<h1>Raw dataset list</h1>
+
+
+<p>Click on the refresh button below to check if new datasets could be added</p>
+
+
+<form method="post">
+    {% csrf_token %}
+    <input type="submit" value="Refresh">
+</form>
+</br>
+
+<h4>Added by last refresh: </h4> 
+<div style="margin-left:20px;margin-top:20px">
+    <dl>
+        <dd> {{ datasetsummary.n_newdatasets }} new datasets, {{ datasetsummary.n_newfiles }} new files, {{ datasetsummary.n_newsize |floatformat:2  }} new GB </dd>
+    </dl>
+</div>
+<img src="data:image/png;base64,{{ plot }}"/>
+
+
+<h4>Total Available: </h4>
+<div style="margin-left:20px;margin-top:20px">
+    <dl>
+        <dd> {{ datasetsummary.n_totdatasets }} datasets,   {{ datasetsummary.n_totfiles }} files, {{ datasetsummary.n_totsize |floatformat:2  }} TB   </dd>
+    </dl>
+</div>
+<img src="data:image/png;base64,{{ plottot }}"/>
+</br>
+
+<h4>Raw datasets list: </h4>
+<div style="margin-left:20px;margin-top:20px">
+
+    {% for key, value in rawdata_dict.items %}
+    <h5>{{ key }}: {{value.n_datasets }} datasets, {{value.tot_files }} files,  {{value.tot_size |floatformat:4 }} TB</h5>
+        <div style="margin-left:40px;margin-top:10px">
+        {% for v in value.datasets %}
+
+            {% for rawdata in model_data %}         
+               {% if v.rcp_name == rawdata.rcp_name and key == rawdata.data_type%}
+               <li>
+                <a href="{{ rawdata.get_absolute_url }}">
+                    {{ v.rcp_name }}: {{ v.number_of_files }} files, {{v.total_size  |floatformat:2 }} GB
+                </a>
+              </li>
+
+                {% endif %}
+            {% endfor %}
+        {% endfor %}
+    </br>
+
+    </div>
+    {% endfor %}
+</br>
+</br>
+</div>
+
+
+
+</div>
+{% endblock %}

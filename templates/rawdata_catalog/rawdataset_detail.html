@@ -1,0 +1,15 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+{% load rawdata_catalog_extras %}
+<h2><strong>Raw dataset:</strong> {{ rawdataset.data_type }}{{"/"}}{{ rawdataset.rcp_name }} </h2>
+<hr>
+<div style="margin-left:20px;margin-top:20px">
+    <h4>File list</h4>
+    {% for file in rawdataset.files_data.files   %}
+        {{file.name}} {{", "}} {{file.size|divide:1000000000  |floatformat:4 }} {{" GB"}}
+        </br>
+    {% endfor %}
+</div>
+
+{% endblock %}
