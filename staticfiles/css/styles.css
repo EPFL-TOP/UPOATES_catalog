@@ -9,7 +9,7 @@
   }
   
   button {
-    background-color: #4CAF50; /* Green */
+    background-color: #8cd88e; /* Green */
     border: none;
     color: white;
     padding: 15px 32px;
@@ -44,7 +44,7 @@
     padding: 50px;
     text-align: center;
    /* background: #1abc9c;*/
-    background: #abd113;
+    background: #a1b459;
     color: white;
   }
   
@@ -106,16 +106,16 @@
   /* Create two unequal columns that sits next to each other */
   /* Sidebar/left column */
   .side {
-    -ms-flex: 20%; /* IE10 */
-    flex: 20%;
+    -ms-flex: 15%; /* IE10 */
+    flex: 15%;
     background-color: #f1f1f1;
     padding: 20px;
   }
   
   /* Main column */
   .main {   
-    -ms-flex: 80%; /* IE10 */
-    flex: 80%;
+    -ms-flex: 85%; /* IE10 */
+    flex: 85%;
     background-color: white;
     padding: 20px;
   }
