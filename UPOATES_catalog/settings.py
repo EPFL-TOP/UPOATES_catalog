@@ -54,7 +54,12 @@ INSTALLED_APPS = [
     'django_rename_app',
     # Add our new application 
     'rawdata_catalog.apps.RawDataCatalogConfig', #This object was created for us in /rawdata_catalog/apps.py
+    'contribution_catalog.apps.ContributionCatalogConfig',
     'experiment_catalog.apps.ExperimentCatalogConfig',
+    'project_catalog.apps.ProjectCatalogConfig',
+    'experimentalcondition_catalog.apps.ExperimentalconditionCatalogConfig',
+
+    
 ]
 
 MIDDLEWARE = [
@@ -97,10 +102,15 @@ DATABASES = {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': BASE_DIR / 'db.sqlite3',
     }
+#    'default': {
+#        'ENGINE': 'django.db.backends.postgresql',
+#        'NAME': BASE_DIR / 'db.postgresql',
+#        'USER': 'mydatabaseuser',
+#        'PASSWORD': 'mypassword',
+#        'HOST': '127.0.0.1',
+#        'PORT': '5432',
+#    }
 
-    #'prod': {
-#
- #   }
 }
 
 

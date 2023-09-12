@@ -2,14 +2,34 @@
 
 {% block content %}
 {% load rawdata_catalog_extras %}
-<h2><strong>Raw dataset:</strong> {{ rawdataset.data_type }}{{"/"}}{{ rawdataset.rcp_name }} </h2>
+<h2><strong>Raw dataset:</strong> {{ rawdataset.data_type }}{{", "}}{{ rawdataset.data_name }} </h2>
+
 <hr>
 <div style="margin-left:20px;margin-top:20px">
-    <h4>File list</h4>
-    {% for file in rawdataset.files_data.files   %}
-        {{file.name}} {{", "}} {{file.size|divide:1000000000  |floatformat:4 }} {{" GB"}}
-        </br>
+    <h4>Experimental Conditions</h4>
+    {% for an in rawdataset.experimentaldataset.experimental_condition.animal.all %}
+        <div style="margin-left:20px;margin-top:10px">
+            <strong>Specie:</strong> {{an.specie}}<br>
+            <strong>Developmental stage:</strong> {{an.developmental_stage}}<br>
+            <strong>Parent line:</strong>   {{  an.parent_line.all|join:", " }} <br/>
+            <strong>Mutation:</strong>  {{  an.mutation.all|join:", " }} <br/>
+            <strong>Mutation grade:</strong> {{an.mutation_grade.all|join:", " }}<br>
+
+        </div>
     {% endfor %}
 </div>
+
+
+<hr>
+
+<div style="margin-left:20px;margin-top:20px">
+    <h4>File list</h4>
+</div>
+    {% for file in rawdataset.files_data.files   %}
+    <div style="margin-left:40px;margin-top:0px">
+    {{file.name}} {{", "}} {{file.size|divide:1000000000  |floatformat:4 }} {{" GB"}}</br>
+</div>
+{% endfor %}
+
 
 {% endblock %}

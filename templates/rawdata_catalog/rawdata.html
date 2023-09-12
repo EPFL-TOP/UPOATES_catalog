@@ -40,10 +40,10 @@
         {% for v in value.datasets %}
 
             {% for rawdata in model_data %}         
-               {% if v.rcp_name == rawdata.rcp_name and key == rawdata.data_type%}
+               {% if v.data_name == rawdata.data_name and key == rawdata.data_type%}
                <li>
                 <a href="{{ rawdata.get_absolute_url }}">
-                    {{ v.rcp_name }}: {{ v.number_of_files }} files, {{v.total_size  |floatformat:2 }} GB
+                    {{ v.data_name }}: {{ v.number_of_files }} files, {{v.total_size  |floatformat:2 }} GB
                 </a>
               </li>
 

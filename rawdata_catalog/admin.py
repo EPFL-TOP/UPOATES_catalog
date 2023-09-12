@@ -4,41 +4,10 @@ from django import forms
 # Register your models here.
 
 
-from .models import Person, Affiliation, ContributionType, ContributionOrigin, Contributor
-from .models import ExperimentalContribution, Experiment, Treatment, ExperimentalTag
-from .models import Publication, Zenodo, Project, ProjectTag, RawDataset, ExperimentalSample
-from .models import Blog
+from .models import RawDataset
 
-
-admin.site.register(Person)
-admin.site.register(Affiliation)
-admin.site.register(ContributionType)
-admin.site.register(ContributionOrigin)
-admin.site.register(Contributor)
-admin.site.register(ExperimentalContribution)
-admin.site.register(Experiment)
-admin.site.register(Treatment)
-admin.site.register(ExperimentalTag)
-admin.site.register(Publication)
-admin.site.register(Zenodo)
-admin.site.register(Project)
-admin.site.register(ProjectTag)
 admin.site.register(RawDataset)
-admin.site.register(ExperimentalSample)
 
-
-@admin.register(Blog)
-class BlogAdmin(admin.ModelAdmin):
-    #form = BlogForm
-    search_fields = ['name']
-    #autocomplete_fields = ['sub_name']
-
-    def get_search_results(self, request, queryset, search_term):
-        print("In get search results ",request,queryset,search_term)
-
-
-        results = super().get_search_results(request, queryset, search_term)
-        return results
 
 #@admin.register(Entry)
 #class EntryAdmin(admin.ModelAdmin):

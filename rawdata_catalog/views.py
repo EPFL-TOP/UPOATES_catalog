@@ -15,23 +15,22 @@ matplotlib.use('agg')
 import io
 import urllib, base64
 
-from rawdata_catalog.forms import RenewBookForm, RawDataForm
-from rawdata_catalog.models import Person, Affiliation, Contributor, ExperimentalContribution, Experiment, Project,RawDataset
+from rawdata_catalog.models import RawDataset
+from experiment_catalog.models import ExperimentalDataset
+from experimentalcondition_catalog.models import ExperimentalCondition
 
 # Create your views here.
-
-
 
 #___________________________________________________________________________________________
 def index(request):
     """View function for home page of site."""
     # Generate counts of some of the main objects
-    num_persons       = Person.objects.all().count()
-    num_affiliations  = Affiliation.objects.all().count()
-    num_contributors  = Contributor.objects.all().count()
-    num_contributions = ExperimentalContribution.objects.all().count()
-    num_projects      = Project.objects.all().count()
-    num_experiments   = Experiment.objects.all().count()
+    #num_persons       = Person.objects.all().count()
+    #num_affiliations  = Affiliation.objects.all().count()
+    #num_contributors  = Contributor.objects.all().count()
+    #num_contributions = ExperimentalContribution.objects.all().count()
+    #num_projects      = Project.objects.all().count()
+    #num_experiments   = Experiment.objects.all().count()
     #print('-->1  ',Experiment.objects.values_list())
     #print('-->2  ',Experiment.objects.all())
     #print('-->3  ',Experiment.objects.values())
@@ -48,12 +47,12 @@ def index(request):
     return render(
         request,
         'index.html',
-        context={'num_persons':num_persons, 
-                 'num_affiliations':num_affiliations,
-                 'num_contributors':num_contributors,
-                 'num_contributions':num_contributions,
-                 'num_projects':num_projects,
-                 'num_experiments':num_experiments,
+        context={#'num_persons':num_persons, 
+                 #'num_affiliations':num_affiliations,
+                 #'num_contributors':num_contributors,
+                 #'num_contributions':num_contributions,
+                 #'num_projects':num_projects,
+                 #'num_experiments':num_experiments,
 
                  'num_visits': num_visits},
     )
@@ -64,7 +63,7 @@ def rawdataset_catalog(request):
 
     result = RawDataset.objects.values()
     list_result = [entry for entry in result] 
-    list_uid=[os.path.join(e["data_type"], e["rcp_name"]) for e in list_result]
+    list_uid=[os.path.join(e["data_type"], e["data_name"]) for e in list_result]
 
     metadata_file=None
     if os.path.exists('/Users/helsens/Software/github/EPFL-TOP/UPOATES_catalog/metadatasummary_2023-08-24_17:39:01.045292_latest.json'):
@@ -96,10 +95,18 @@ def rawdataset_catalog(request):
                 tot_size=0
                 for f in value["data"]["raw_files"]:
                     tot_size+=int(f["size"])
-                test = RawDataset(data_type=os.path.split(newkey)[0], rcp_name=os.path.split(newkey)[-1], data_status="available",
+                rawds = RawDataset(data_type=os.path.split(newkey)[0], data_name=os.path.split(newkey)[-1], data_status="available",
                                   number_of_files=n_files, total_size=tot_size,files_data={'files':value["data"]["raw_files"]},
                                   date_added=datetime.datetime.now())
-                test.save()
+                rawds.save()
+
+                expcond = ExperimentalCondition()
+                expcond.save()
+                expds = ExperimentalDataset(raw_dataset=rawds, experimental_condition=expcond)
+                expds.save()
+
+
+
                 n_newdatasets+=1
                 n_newfiles+=n_files
                 n_newsize+=tot_size
@@ -154,6 +161,15 @@ def rawdataset_catalog(request):
     print(sizetot_added)
     print(ndatasetstot_added)
 
+
+    mydata = ExperimentalCondition.objects.all()
+    print(mydata)
+    for d in mydata:
+        print('-----------------, ',d.animal)
+        for a in d.animal.all():
+            print('ssssssss  ',a.specie)
+    mydata = ExperimentalCondition.objects.filter(animal__specie='zebrafish')
+    print('================================',mydata)
     rawdata_dict={}
     for e in model_list:
         try:
@@ -169,11 +185,11 @@ def rawdataset_catalog(request):
         rawdata_dict[e["data_type"]]['tot_files']=rawdata_dict[e["data_type"]]['tot_files']+int(e["number_of_files"])
         rawdata_dict[e["data_type"]]['n_datasets']=rawdata_dict[e["data_type"]]['n_datasets']+1
     for e in model_list:
-        newlist = sorted(rawdata_dict[e["data_type"]]['datasets'], key=lambda d: d['rcp_name'])
+        newlist = sorted(rawdata_dict[e["data_type"]]['datasets'], key=lambda d: d['data_name'])
         rawdata_dict[e["data_type"]]['datasets']=newlist
     
 
-    plt.rcParams['figure.figsize'] = [15, 4]
+    plt.rcParams['figure.figsize'] = [12, 3]
     fig, ax = plt.subplots()
 
     fig.subplots_adjust(right=0.75)
@@ -250,237 +266,8 @@ def rawdataset_catalog(request):
     return render(request, "rawdata_catalog/rawdata.html", context)#, {"form": form})
 
 
-
- # data_type           = models.CharField(max_length=100, choices=DATA_TYPE, help_text='Type of data for this dataset (reflecting the the RCP storage categories)')
- #   rcp_name            = models.CharField(max_length=100, choices=sorted(RCP_NAME), help_text="Name of the experimental dataset folder on the RCP storage.")
- #   experiment          = models.ForeignKey('Experiment', on_delete=models.SET_DEFAULT, help_text="Select experimental datasets for this experiment", default='', null=True)
- #   experimental_sample = models.ManyToManyField(ExperimentalSample, help_text="Select experimental samples for this experimental dataset", default='', null=True)
- ##   data_status         = models.CharField(blank=True, max_length=100, choices=DATA_STATUS, default='', help_text='Status of the data on the RCP storage')
-  #  compression         = models.CharField(blank=True, max_length=100, choices=COMPRESSION_TYPE, default='', help_text='Type of compression if any')
-  #  file_format         = models.CharField(blank=True, max_length=100, choices=FILE_FORMAT, default='', help_text='Format of the files')
-
-   # number_of_files = models.CharField(blank=True, max_length=10, help_text='Number of files for this dataset. FILLED AUTOMATICALLY', default='')
-    #total_size      = models.CharField(blank=True, max_length=100, help_text='Total size for this dataset. FILLED AUTOMATICALLY', default='')
-
-
-    # if this is a POST request we need to process the form data
-    #if request.method == "POST":
-        # create a form instance and populate it with data from the request:
-    #    form = RawDataForm(request.POST)
-        # check whether it's valid:
-        #if form.is_valid():
-            # process the data in form.cleaned_data as required
-            # ...
-            # redirect to a new URL:
-        #    return HttpResponseRedirect("/thanks/")
-
-    # if a GET (or any other method) we'll create a blank form
-    #else:
-    #    form = RawDataForm()
-
-
-
-
-
-#___________________________________________________________________________________________
-class ProjectListView(generic.ListView):
-    """Generic class-based view for a list of experiments."""
-    model = Project
-    paginate_by = 10
-
-#___________________________________________________________________________________________
-class ProjectDetailView(generic.DetailView):
-    """Generic class-based detail view for an experiment."""
-    model = Project
-
-#___________________________________________________________________________________________
-class ExperimentListView(generic.ListView):
-    """Generic class-based view for a list of experiments."""
-    model = Experiment
-    paginate_by = 10
-
-#___________________________________________________________________________________________
-class ExperimentDetailView(generic.DetailView):
-    """Generic class-based detail view for an experiment."""
-    model = Experiment
-
-#___________________________________________________________________________________________
-class ContributorListView(generic.ListView):
-    """Generic class-based view for a list of contributors."""
-    model = Contributor
-    paginate_by = 10
-
-#___________________________________________________________________________________________
-class ContributorDetailView(generic.DetailView):
-    """Generic class-based detail view for a contributor."""
-    model = Contributor
-
-#___________________________________________________________________________________________
-class ExperimentalContributionListView(generic.ListView):
-    """Generic class-based view for a list of contributions."""
-    model = ExperimentalContribution
-    paginate_by = 10
-
-#___________________________________________________________________________________________
-class ExperimentalContributionDetailView(generic.DetailView):
-    """Generic class-based detail view for a contribution."""
-    model = ExperimentalContribution
-
-#___________________________________________________________________________________________
-class PersonListView(generic.ListView):
-    """Generic class-based view for a list of persons."""
-    model = Person
-    paginate_by = 10
-
-#___________________________________________________________________________________________
-class PersonDetailView(generic.DetailView):
-    """Generic class-based detail view for a contributor."""
-    model = Person
-
-#___________________________________________________________________________________________
-class AffiliationListView(generic.ListView):
-    """Generic class-based view for a list of affiliations."""
-    model = Affiliation
-    paginate_by = 10
-
-#___________________________________________________________________________________________
-class AffiliationDetailView(generic.DetailView):
-    """Generic class-based detail view for an affiliation."""
-    model = Affiliation
-
 #___________________________________________________________________________________________
 class RawdatasetDetailView(generic.DetailView):
     """Generic class-based detail view for an affiliation."""
     model = RawDataset
 
-#class BookListView(generic.ListView):
-#    """Generic class-based view for a list of books."""
-#    model = Book
-#    paginate_by = 10
-
-
-#class BookDetailView(generic.DetailView):
-#    """Generic class-based detail view for a book."""
-#    model = Book
-
-
-#class AuthorListView(generic.ListView):
-#    """Generic class-based list view for a list of authors."""
-#    model = Author
-#    paginate_by = 10
-
-
-#class AuthorDetailView(generic.DetailView):
-#    """Generic class-based detail view for an author."""
-#    model = Author
-
-
-
-
-#class LoanedBooksByUserListView(LoginRequiredMixin, generic.ListView):
-#    """Generic class-based view listing books on loan to current user."""
-#    model = BookInstance
-#    template_name = 'rawdata_catalog/bookinstance_list_borrowed_user.html'
-#    paginate_by = 10
-
-#    def get_queryset(self):
-#        return (
-#            BookInstance.objects.filter(borrower=self.request.user)
-#            .filter(status__exact='o')
-#            .order_by('due_back')
-#        )
-
-
-
-
-#class LoanedBooksAllListView(PermissionRequiredMixin, generic.ListView):
-#    """Generic class-based view listing all books on loan. Only visible to users with can_mark_returned permission."""
-#    model = BookInstance
-#    permission_required = 'rawdata_catalog.can_mark_returned'
-#    template_name = 'rawdata_catalog/bookinstance_list_borrowed_all.html'
-#    paginate_by = 10
-
-#    def get_queryset(self):
-#        return BookInstance.objects.filter(status__exact='o').order_by('due_back')
-
-
-
-
-#@login_required
-#@permission_required('rawdata_catalog.can_mark_returned', raise_exception=True)
-#def renew_book_librarian(request, pk):
-#    """View function for renewing a specific BookInstance by librarian."""
-#    book_instance = get_object_or_404(BookInstance, pk=pk)
-#
-#    # If this is a POST request then process the Form data
-#    if request.method == 'POST':
-#
-#        # Create a form instance and populate it with data from the request (binding):
-#        form = RenewBookForm(request.POST)
-#
-#        # Check if the form is valid:
-#        if form.is_valid():
-#            # process the data in form.cleaned_data as required (here we just write it to the model due_back field)
-#            book_instance.due_back = form.cleaned_data['renewal_date']
-#            book_instance.save()
-#
-#            # redirect to a new URL:
-#            return HttpResponseRedirect(reverse('all-borrowed'))
-#
-#    # If this is a GET (or any other method) create the default form
-#    else:
-#        proposed_renewal_date = datetime.date.today() + datetime.timedelta(weeks=3)
-#        form = RenewBookForm(initial={'renewal_date': proposed_renewal_date})
-#
-#    context = {
-#        'form': form,
-#        'book_instance': book_instance,
-#    }
-#
-#    return render(request, 'rawdata_catalog/book_renew_librarian.html', context)
-
-@login_required
-@permission_required('rawdata_catalog.can_mark_returned', raise_exception=True)
-class ProjectCreate(PermissionRequiredMixin, CreateView):
-    model = Project
-    fields = ['name', 'date', 'description']
-    #initial = {'date_of_death': '11/06/2020'}
-    permission_required = 'rawdata_catalog.can_mark_returned'
-
-
-#class AuthorCreate(PermissionRequiredMixin, CreateView):
-#    model = Author
-#    fields = ['first_name', 'last_name', 'date_of_birth', 'date_of_death']
-#    initial = {'date_of_death': '11/06/2020'}
-#    permission_required = 'rawdata_catalog.can_mark_returned'
-
-
-#class AuthorUpdate(PermissionRequiredMixin, UpdateView):
-#    model = Author
-#    fields = '__all__' # Not recommended (potential security issue if more fields added)
-#    permission_required = 'rawdata_catalog.can_mark_returned'
-
-
-#class AuthorDelete(PermissionRequiredMixin, DeleteView):
-#    model = Author
-#    success_url = reverse_lazy('authors')
-#    permission_required = 'rawdata_catalog.can_mark_returned'
-
-
-# Classes created for the forms challenge
-#class BookCreate(PermissionRequiredMixin, CreateView):
-#    model = Book
-#    fields = ['title', 'author', 'summary', 'isbn', 'genre', 'language']
-#    permission_required = 'rawdata_catalog.can_mark_returned'
-
-
-#class BookUpdate(PermissionRequiredMixin, UpdateView):
-#    model = Book
-#    fields = ['title', 'author', 'summary', 'isbn', 'genre', 'language']
-#    permission_required = 'rawdata_catalog.can_mark_returned'
-
-
-#class BookDelete(PermissionRequiredMixin, DeleteView):
-#    model = Book
-#    success_url = reverse_lazy('books')
-#    permission_required = 'rawdata_catalog.can_mark_returned'
