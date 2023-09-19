@@ -30,33 +30,16 @@ class ExperimentalTag(models.Model):
         return self.name_short
     
 
-#___________________________________________________________________________________________
-class ExperimentalDataset(models.Model):
-    """Model representing the experimental dataset of a given raw-dataset."""  
-
-    raw_dataset = models.OneToOneField(RawDataset, on_delete=models.CASCADE, primary_key=True, help_text="Raw dataset for this experimental dataset.")
-    experimental_condition = models.OneToOneField(ExperimentalCondition, on_delete=models.CASCADE, null=True, blank=True,   default='', help_text="Raw dataset for this experimental dataset.")
-
-    def get_absolute_url(self):
-        """Returns the url to access a particular Experiment instance."""
-        return reverse('experimentaldataset-detail', args=[str(self.id)])
-
-    def __str__(self):
-        """String for representing the Experiment object."""
-        return '{0}, {1}'.format(self.raw_dataset.data_type, self.raw_dataset.data_name)
-    
-
 
 
 #___________________________________________________________________________________________
 class Experiment(models.Model):
     """Model representing an experiment."""  
-    experiment_name      = models.CharField(max_length=100, help_text="Name of the experiment.")
-    experimental_dataset = models.ForeignKey(ExperimentalDataset, on_delete=models.CASCADE, default="")
-    date                 = models.DateField(null=True, help_text="Date of the experiment.")
-    experimental_tag     = models.ManyToManyField(ExperimentalTag, help_text="Experimental tag(s) for this experiment")
-    contribution         = models.ManyToManyField(Contribution, blank=True, help_text="Contribution(s) for this experiment")
-    description          = models.TextField(blank=True, max_length=2000, help_text="Description of the experiment")
+    experiment_name   = models.CharField(max_length=100, help_text="Name of the experiment.")
+    date              = models.DateField(null=True, help_text="Date of the experiment.")
+    experimental_tag  = models.ManyToManyField(ExperimentalTag, help_text="Experimental tag(s) for this experiment")
+    contribution      = models.ManyToManyField(Contribution, blank=True, help_text="Contribution(s) for this experiment")
+    description       = models.TextField(blank=True, max_length=2000, help_text="Description of the experiment")
 
     def get_absolute_url(self):
         """Returns the url to access a particular Experiment instance."""
@@ -67,3 +50,21 @@ class Experiment(models.Model):
         return '{0}, {1}'.format(self.experiment_name, self.date)
     
 
+#___________________________________________________________________________________________
+class ExperimentalDataset(models.Model):
+    """Model representing the experimental dataset of a given raw-dataset."""  
+
+    raw_dataset            = models.OneToOneField(RawDataset, on_delete=models.CASCADE, primary_key=True, help_text="Raw dataset for this experimental dataset.")
+    experimental_condition = models.OneToOneField(ExperimentalCondition, on_delete=models.CASCADE, null=True, blank=True,   default='', help_text="Raw dataset for this experimental dataset.")
+    experiment             = models.ForeignKey(Experiment, null=True, blank=True, on_delete=models.CASCADE, default="")
+
+    def get_absolute_url(self):
+        """Returns the url to access a particular Experiment instance."""
+        return reverse('experimentaldataset-detail', args=[str(self.id)])
+
+    def __str__(self):
+        """String for representing the Experiment object."""
+        return '{0}, {1}'.format(self.raw_dataset.data_type, self.raw_dataset.data_name)
+    
+    class Meta:
+        ordering = ("raw_dataset__data_type","raw_dataset__data_name")

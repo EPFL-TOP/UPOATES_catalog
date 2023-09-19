@@ -4,32 +4,114 @@
 {% load rawdata_catalog_extras %}
 <h2><strong>Raw dataset:</strong> {{ rawdataset.data_type }}{{", "}}{{ rawdataset.data_name }} </h2>
 
+{% if rawdataset.experimentaldataset.experimental_condition.sample.all %}
 <hr>
 <div style="margin-left:20px;margin-top:20px">
     <h4>Experimental Conditions</h4>
-    {% for an in rawdataset.experimentaldataset.experimental_condition.animal.all %}
+    {% for an in rawdataset.experimentaldataset.experimental_condition.sample.all %}
         <div style="margin-left:20px;margin-top:10px">
             <strong>Specie:</strong> {{an.specie}}<br>
             <strong>Developmental stage:</strong> {{an.developmental_stage}}<br>
-            <strong>Parent line:</strong>   {{  an.parent_line.all|join:", " }} <br/>
-            <strong>Mutation:</strong>  {{  an.mutation.all|join:", " }} <br/>
-            <strong>Mutation grade:</strong> {{an.mutation_grade.all|join:", " }}<br>
+            <strong>Mutation(s):</strong>  {{  an.mutation.all|join:", " }} <br/>
+            <strong>Pyrat crossing ID:</strong> {{an.pyrat_crossing_id}}<br>
+            <strong>Crossing date:</strong> {{an.date_of_crossing}}<br>
+
+            <strong>Parent(s) lines:</strong>  
+            <div style="margin-left:20px;margin-top:0px">
+            {% for parent in an.parent.all %}
+                <strong>{{ forloop.counter }}:</strong> {{"Strain: "}} {{parent.strain_name}} {{",  DoB: "}} {{parent.date_of_birth}} {{",  Age at crossing: "}} {{parent.age_at_crossing}} {{" days "}}
+                {{",  N males: "}} {{ parent.number_of_male }} {{",  N females: "}} {{ parent.number_of_female }} {{",  N unknown: "}} {{ parent.number_of_unknown }}<br/>
+
+            {% endfor %}
+            <br/>
+
+        </div>
+
+                </div>
+    {% endfor %}
+</div>
+{% endif %}
+
+
+{% if rawdataset.experimentaldataset.experimental_condition.instrumental_condition.all %}
+<hr>
+<div style="margin-left:20px;margin-top:20px">
+    <h4>Instrumental Conditions</h4>
+    {% for an in rawdataset.experimentaldataset.experimental_condition.instrumental_condition.all %}
+        <div style="margin-left:20px;margin-top:10px">
+            <strong>Instrument name:</strong> {{an.instrument_name}}<br>
+            <strong>Instrument type:</strong> {{an.instrument_type}}<br>
 
         </div>
     {% endfor %}
+
 </div>
+
+{% endif %}
+
+
+
+{% if rawdataset.experimentaldataset.experiment.experiment_name %}
+<hr>
+<div style="margin-left:20px;margin-top:20px">
+    <h4>Experiment details</h4>
+    <div style="margin-left:20px;margin-top:10px">
+        <strong>Name:</strong> <a href="{{ rawdataset.experimentaldataset.experiment.get_absolute_url }}">
+            {{ rawdataset.experimentaldataset.experiment.experiment_name }}
+            </a> <br>
+        <strong>Date:</strong> {{rawdataset.experimentaldataset.experiment.date}}<br>
+        <strong>Description:</strong> {{rawdataset.experimentaldataset.experiment.description}}<br>
+        <strong>Tags:</strong> {{rawdataset.experimentaldataset.experiment.experimental_tag.all|join:", "}}<br>
+        <strong>Contributions:</strong>  
+        <div style="margin-left:20px;margin-top:0px">
+            {% for cont in rawdataset.experimentaldataset.experiment.contribution.all %}
+
+                <strong>contributor: </strong>{{cont.contributor.all|join:", "}} <br/>
+                <strong>type: </strong>{{cont.type.all|join:", "}} <br/>
+                <strong>origin: </strong>{{cont.origin.all|join:", "}} <br/>
+                <strong>description: </strong> {{cont.description}} <br/> 
+                {% if forloop.counter != rawdataset.experimentaldataset.experiment.contribution.all|length %} 
+                    <br/>
+                {% endif %}
+
+
+            {% endfor %}
+            <br/>
+
+        </div>
+    </div>
+</div>
+{% endif %}
+
 
 
 <hr>
 
 <div style="margin-left:20px;margin-top:20px">
-    <h4>File list</h4>
+    <h4>RawDataset details</h4>
 </div>
+
+
+
+<div style="margin-left:40px;margin-top:1px">
+    <strong>Number of files:</strong> {{rawdataset.number_of_files}}</br>
+    <strong>Total size:</strong> {{rawdataset.total_size|divide:1000000000  |floatformat:4 }} {{" GB"}}</br>
+    <strong>Date added:</strong> {{rawdataset.date_added}}</br>
+    <strong>Status:</strong> {{rawdataset.data_status}}</br>
+    <strong>Date removed:</strong> {{rawdataset.date_removed}}</br>
+    <strong>File format:</strong> {{rawdataset.file_format}}</br>
+    <strong>Compression:</strong> {{rawdataset.compression}}</br>
+
+    <strong>File list</strong>
+</div>
+
     {% for file in rawdataset.files_data.files   %}
-    <div style="margin-left:40px;margin-top:0px">
-    {{file.name}} {{", "}} {{file.size|divide:1000000000  |floatformat:4 }} {{" GB"}}</br>
+        <div style="margin-left:60px;margin-top:0px">
+            <strong>{{ forloop.counter }}{{": "}}</strong>{{file.name}} {{", "}} {{file.size|divide:1000000000  |floatformat:4 }} {{" GB"}}</br>
 </div>
 {% endfor %}
 
 
 {% endblock %}
+
+

@@ -8,3 +8,9 @@ def divide(value, arg):
         return int(value) / int(arg)
     except (ValueError, ZeroDivisionError):
         return None
+    
+
+
+@register.simple_tag
+def define(val=None):
+  return val
