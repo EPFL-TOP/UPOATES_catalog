@@ -1,0 +1,42 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+
+<h2><strong>Experiment:</strong> {{ experiment.experiment_name }} </h2>
+<hr>
+
+<div style="margin-left:10px;margin-top:20px">
+  <strong>Date:</strong> {{ experiment.date }}</br>
+  <strong>Tags:</strong> {{ experiment.experimental_tag.all|join:", "  }}</br>
+  <strong>Description:</strong> {{ experiment.description }}</br>
+
+  <strong>Contributions:</strong>  
+  <div style="margin-left:20px;margin-top:0px">
+      {% for cont in experiment.contribution.all %}
+
+          <strong>contributor: </strong>{{cont.contributor.all|join:", "}} <br/>
+          <strong>type: </strong>{{cont.type.all|join:", "}} <br/>
+          <strong>origin: </strong>{{cont.origin.all|join:", "}} <br/>
+          <strong>description: </strong> {{cont.description}} <br/> 
+          {% if forloop.counter != experiment.contribution.all|length %} 
+              <br/>
+          {% endif %}
+      {% endfor %}
+      <br/>
+  </div>
+
+<hr>
+
+<h2><strong>RawDataset:</strong>   </h2>
+<div style="margin-left:20px;margin-top:0px">
+
+
+{% for rds in experiment.experimentaldataset_set.all %}
+<strong>{{forloop.counter}}</strong>  <a href="{{ rds.raw_dataset.get_absolute_url }}">
+  {{ rds.raw_dataset }}</a> <br>
+{% endfor %}
+</div>
+
+
+
+{% endblock %}
