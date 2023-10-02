@@ -175,13 +175,21 @@ def fill_parents():
             d2 = datetime.datetime.strptime(p["date_of_birth"], "%Y-%m-%d")
             print('[rewewwerwerwerfwdfegjfhgjuafhgjdafjdk;zjkdjaf;jeakfjEKAfjkeAJf;ieAJfejwfkjZI]      ',d2-d1)
             delta = d1 - d2
+            
+            mutation = ''
+            print('mutation         ----------------------  ',p["mutations"])
+            for m in p["mutations"]:
+                if mutation!='':mutation+=", "
+                mutation+="("+m["mutation_name"]+","+m["mutation_grade_name"]+")"
+            print('mutations        ',mutation)
             parent = Parent(number_of_male=str(p["number_of_male"]),
                             number_of_female=p["number_of_female"],
                             number_of_unknown=p["number_of_unknown"],
                             date_of_birth=p["date_of_birth"],
                             strain_name=p["strain_name"],
                             age_at_crossing=delta.days,
-                            pyrat_crossing_id=xid)
+                            pyrat_crossing_id=xid,
+                            mutation_grade=mutation)
 
             parent.save()
             sample_with_date.parent.add(parent)
@@ -236,6 +244,8 @@ def rawdataset_catalog(request):
     if 'reload_mutation' in request.POST:
         add_mutations()
     result = RawDataset.objects.values()
+    print(RawDataset.objects)
+    print('-------------------------------------------',result)
     list_result = [entry for entry in result] 
     list_uid=[os.path.join(e["data_type"], e["data_name"]) for e in list_result]
 
@@ -289,10 +299,14 @@ def rawdataset_catalog(request):
         'specie':[],
         'developmental_stage':[],
         'mutation':[],
-        'grade':[]
+        'grade':[],
+        'instrument_type':[],
+        'instrument_name':[],
         }
     
     mydata = ExperimentalCondition.objects.all()
+
+
 
     for d in mydata:
         for a in d.sample.all():
@@ -305,6 +319,12 @@ def rawdataset_catalog(request):
                     search_dict['mutation'].append(m.name.name)
                 if m.grade.grade not in search_dict['grade']:
                     search_dict['grade'].append(m.grade.grade)
+        for a in d.instrumental_condition.all():
+            print('a-------------- ',a)
+            if a.instrument_type not in search_dict["instrument_type"]:
+                search_dict["instrument_type"].append(a.instrument_type)
+            if a.instrument_name not in search_dict["instrument_name"]:
+                search_dict["instrument_name"].append(a.instrument_name)
 
     print('------------------------------------------------  search dict  ',search_dict)
     model_data = RawDataset.objects.all()
@@ -312,19 +332,29 @@ def rawdataset_catalog(request):
     if request.method=="POST":
         search_specie=request.POST.get('search_specie')
         if search_specie != None:
-            print('=================, search_specie:   ',search_specie)
             model_data = model_data.filter(experimentaldataset__experimental_condition__sample__specie=search_specie)
 
         search_devstage=request.POST.get('search_devstage')
         if search_devstage != None:
-            print('=================, search_devstage: ',search_devstage)
             model_data = model_data.filter(experimentaldataset__experimental_condition__sample__developmental_stage=search_devstage)
-
+            print(search_devstage)
         search_mutation=request.POST.get('search_mutation')
         if search_mutation != None:
-            print('=================, search_mutation: ',search_mutation)
             model_data = model_data.filter(experimentaldataset__experimental_condition__sample__mutation__name__name=search_mutation)
 
+        search_grade=request.POST.get('search_grade')
+        if search_grade != None:
+            model_data = model_data.filter(experimentaldataset__experimental_condition__sample__mutation__grade__grade=search_grade)
+
+        search_instrument_type=request.POST.get('search_instrument_type')
+        if search_instrument_type != None:
+            model_data = model_data.filter(experimentaldataset__experimental_condition__instrumental_condition__instrument_type=search_instrument_type)
+
+        search_instrument_name=request.POST.get('search_instrument_name')
+        if search_instrument_name != None:
+            model_data = model_data.filter(experimentaldataset__experimental_condition__instrumental_condition__instrument_name=search_instrument_name)
+
+    print('================================',model_data)
 
     model_values = model_data.values()
     model_list = [entry for entry in model_values] 
@@ -422,6 +452,7 @@ def rawdataset_catalog(request):
     p2, = twin1.plot(date_added, nfiles_added, "C0",  marker='.', label="n files", color='tab:green')
     p3, = twin2.plot(date_added, ndatasets_added, "C0",  marker='.', label="n datasets")
 
+    print(size_added)
     ax.set(ylim=(min(size_added), max(size_added)), xlabel="Date", ylabel="Size (TB)")
     twin1.set(ylim=(min(nfiles_added), max(nfiles_added)), ylabel="Number of files")
     twin2.set(ylim=(min(ndatasets_added), max(ndatasets_added)), ylabel="Number of datasets")

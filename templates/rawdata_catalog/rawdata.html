@@ -7,7 +7,7 @@
 <p>Click on the refresh button below to check if new datasets could be added</p>
 
 
-<form method="post">
+<form method="POST">
     {% csrf_token %}
     <input type="submit" name="reload_dataset"  value="Reload dataset">
     <input type="submit" name="reload_pyrat"    value="Reload pyrat">
@@ -21,30 +21,45 @@
     <select id="search_specie" name="search_specie">
         <option selected disabled>--Select Specie--</option>
         {% for specie in search_dict.specie %}
-            <option value={{ specie }}>{{ specie }}</option>
+            <option value="{{ specie }}">{{ specie }}</option>
         {% endfor %}
     </select>
 
     <select id="search_devstage" name="search_devstage">
         <option selected disabled>---Select Dev stage--</option>
         {% for dev_stage in search_dict.developmental_stage %}
-            <option value={{ dev_stage }}>{{ dev_stage }}</option>
+            <option value="{{ dev_stage }}">{{ dev_stage }}</option>
         {% endfor %}
     </select>
 
     <select id="search_mutation" name="search_mutation">
         <option selected disabled>---Select mutation--</option>
         {% for mut in search_dict.mutation %}
-            <option value={{ mut }}>{{ mut }}</option>
+            <option value="{{ mut }}">{{ mut }}</option>
         {% endfor %}
     </select>
 
     <select id="search_grade" name="search_grade">
         <option selected disabled>---Select grade--</option>
         {% for gr in search_dict.grade %}
-            <option value={{ gr }}>{{ gr }}</option>
+            <option value="{{ gr }}">{{ gr }}</option>
         {% endfor %}
     </select>
+
+    <select id="search_instrument_type" name="search_instrument_type">
+        <option selected disabled>---Select instrument type--</option>
+        {% for inst in search_dict.instrument_type %}
+            <option value="{{ inst }}">{{ inst }}</option>
+        {% endfor %}
+    </select>
+
+    <select id="search_instrument_name" name="search_instrument_name">
+        <option selected disabled>---Select instrument name--</option>
+        {% for inst in search_dict.instrument_name %}
+            <option value="{{ inst }}">{{ inst }}</option>
+        {% endfor %}
+    </select>
+
 
     <button id="search_submit" type="submit" >Submit</button>
 </form>

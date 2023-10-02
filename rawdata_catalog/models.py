@@ -56,3 +56,6 @@ class RawDataset(models.Model):
         #return ''
         return '{0}, {1}, {2}, {3}, {4}'.format(self.data_type, self.data_name, self.data_status, self.number_of_files, self.total_size)
 
+
+    class Meta:
+        ordering = ('data_type','data_name',)

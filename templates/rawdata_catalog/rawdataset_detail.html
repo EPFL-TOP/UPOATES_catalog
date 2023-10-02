@@ -19,8 +19,15 @@
             <strong>Parent(s) lines:</strong>  
             <div style="margin-left:20px;margin-top:0px">
             {% for parent in an.parent.all %}
+                {% if parent.mutation_grade != '' %}
+                    <strong>{{ forloop.counter }}:</strong> {{"Mutations: "}} {{parent.mutation_grade}} {{",  Strain: "}} {{parent.strain_name}} {{",  DoB: "}} {{parent.date_of_birth}} {{",  Age at crossing: "}} {{parent.age_at_crossing}} {{" days "}}
+                {{",  N males: "}} {{ parent.number_of_male }} {{",  N females: "}} {{ parent.number_of_female }} {{",  N unknown: "}} {{ parent.number_of_unknown }}<br/>
+
+                {% elif  parent.mutation_grade == '' %}
                 <strong>{{ forloop.counter }}:</strong> {{"Strain: "}} {{parent.strain_name}} {{",  DoB: "}} {{parent.date_of_birth}} {{",  Age at crossing: "}} {{parent.age_at_crossing}} {{" days "}}
                 {{",  N males: "}} {{ parent.number_of_male }} {{",  N females: "}} {{ parent.number_of_female }} {{",  N unknown: "}} {{ parent.number_of_unknown }}<br/>
+                
+                {% endif %}
 
             {% endfor %}
             <br/>
@@ -41,6 +48,27 @@
         <div style="margin-left:20px;margin-top:10px">
             <strong>Instrument name:</strong> {{an.instrument_name}}<br>
             <strong>Instrument type:</strong> {{an.instrument_type}}<br>
+            {% if an.laser_intensity %}
+                <strong>Laser intensity:</strong> {{an.laser_intensity}}<br>
+            {% endif %}
+
+            {% if an.laser_wavelength %}
+                <strong>Laser wavelength:</strong> {{an.laser_wavelength}}<br>
+            {% endif %}
+
+            {% if an.temperature %}
+                <strong>Temperature:</strong> {{an.temperature}}<br>
+            {% endif %}
+
+            {% if an.total_read %}
+                <strong>Total read:</strong> {{an.total_read}}<br>
+            {% endif %}
+
+            {% if an.read_config %}
+                <strong>Read config:</strong> {{an.read_config}}<br>
+            {% endif %}
+
+    
 
         </div>
     {% endfor %}
@@ -98,9 +126,17 @@
     <strong>Total size:</strong> {{rawdataset.total_size|divide:1000000000  |floatformat:4 }} {{" GB"}}</br>
     <strong>Date added:</strong> {{rawdataset.date_added}}</br>
     <strong>Status:</strong> {{rawdataset.data_status}}</br>
-    <strong>Date removed:</strong> {{rawdataset.date_removed}}</br>
-    <strong>File format:</strong> {{rawdataset.file_format}}</br>
-    <strong>Compression:</strong> {{rawdataset.compression}}</br>
+    {% if rawdataset.date_removed %}
+        <strong>Date removed:</strong> {{rawdataset.date_removed}}</br>
+    {% endif %}
+
+    {% if rawdataset.file_format %}
+        <strong>File format:</strong> {{rawdataset.file_format}}</br>
+    {% endif %}
+
+    {% if rawdataset.compression %}
+        <strong>Compression:</strong> {{rawdataset.compression}}</br>
+    {% endif %}
 
     <strong>File list</strong>
 </div>

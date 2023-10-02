@@ -13,22 +13,16 @@ from experimentalcondition_catalog.models import ExperimentalCondition
 #___________________________________________________________________________________________
 class ExperimentalTag(models.Model):
     """Model representing an experimental tag"""
-    name_short  = models.CharField(max_length=200, help_text="Short name for the experimental tag")
-    name_long   = models.CharField(blank=True, max_length=200, help_text="Long name the experimental tag")
-    description = models.TextField(blank=True,max_length=2000, help_text="Enter a brief description of the experimental tag")
+    name        = models.CharField(default='', max_length=200, help_text="Experimental tag name")
+    description = models.TextField(blank=True, max_length=2000, help_text="Experimental tag description")
 
     class Meta:
         verbose_name = 'Experimental tag'
         verbose_name_plural = 'Experimental tags'
-
-    def get_absolute_url(self):
-        """Returns the url to access a particular experimental tag instance."""
-        return reverse('treatment-detail', args=[str(self.id)])
     
     def __str__(self):
         """String for representing the Model object (in Admin site etc.)"""
-        return self.name_short
-    
+        return self.name 
 
 
 
@@ -56,7 +50,7 @@ class ExperimentalDataset(models.Model):
 
     raw_dataset            = models.OneToOneField(RawDataset, on_delete=models.CASCADE, primary_key=True, help_text="Raw dataset for this experimental dataset.")
     experimental_condition = models.OneToOneField(ExperimentalCondition, on_delete=models.CASCADE, null=True, blank=True,   default='', help_text="Raw dataset for this experimental dataset.")
-    experiment             = models.ForeignKey(Experiment, null=True, blank=True, on_delete=models.CASCADE, default="")
+    experiment             = models.ForeignKey(Experiment, null=True, blank=True, on_delete=models.DO_NOTHING, default="")
 
     def get_absolute_url(self):
         """Returns the url to access a particular Experiment instance."""

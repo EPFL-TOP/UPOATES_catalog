@@ -5,6 +5,7 @@ from datetime import date
 from django.contrib.auth.models import User  # Required to assign User as a borrower
 from django import forms
 from django.core.exceptions import ObjectDoesNotExist
+from django.db.models.functions import Lower, Upper
 
 DEV_STAGE = (
     ('1-cell (0.2h)',      '1-cell (0.2h)'),
@@ -56,10 +57,12 @@ class Parent(models.Model):
     date_of_birth      = models.DateField(null=True, help_text="Parents date of birth")
     age_at_crossing    = models.CharField(max_length=5, default='', help_text="Age at crossing in days")
     pyrat_crossing_id  = models.CharField(max_length=10, default='', help_text='Pyrat crossing id')
-
+    mutation_grade     = models.CharField(max_length=100, default='', help_text='Parents mutation(s)')
     def __str__(self):
         """String for representing the Model object (in Admin site etc.)"""
         return 'crossID: {0}, Age at crossing: {1} days'.format(self.pyrat_crossing_id, self.age_at_crossing)
+
+{'crossing_id': 5316, 'status': 'set-up', 'date_of_record': '2023-07-12', 'strain_name_with_id': '13 - Looping_1, Heidi_2', 'description': 'Training crossing in MST. Requested by Rohde.', 'tanks': {'parents': [{'tank_id': 5399, 'strain_id': 13, 'strain_name': 'Looping_1, Heidi_2', 'strain_name_id': 13, 'strain_name_with_id': '13 - Looping_1, Heidi_2', 'mutations': [{'mutation_id': 3, 'mutation_name': 'heidi', 'mutation_name_official': 'unpublished', 'mutation_grade_id': 5, 'mutation_grade_name': 'Het'}, {'mutation_id': 2, 'mutation_name': 'looping', 'mutation_name_official': 'TgBAC(her1:Venus)', 'mutation_grade_id': 5, 'mutation_grade_name': 'Het'}], 'number_of_male': 5, 'number_of_female': 5, 'number_of_unknown': 0, 'date_of_birth': '2022-06-17'}], 'children': []}}
 
 
 #___________________________________________________________________________________________
@@ -90,7 +93,7 @@ class Mutation(models.Model):
     grade = models.ForeignKey(MutationGrade, on_delete=models.CASCADE, default='', help_text="Grade of the mutation.")
 
     class Meta:
-        ordering = ('name','grade',)
+        ordering = (Lower('name'),'grade',)
 
     def __str__(self):
         """String for representing the Model object (in Admin site etc.)"""
@@ -108,7 +111,7 @@ class Treatment(models.Model):
     """Model representing a treatment"""
     name                = models.CharField(default='', max_length=200, help_text="Treatment name")
     type                = models.CharField(default='',max_length=200, help_text="Treatment type", choices=TREAT_TYPE)
-    developmental_stage = models.CharField(max_length=100, choices=DEV_STAGE, default='', help_text='Developmental stage')
+    developmental_stage = models.CharField(blank=True, max_length=100, choices=DEV_STAGE, default='', help_text='Developmental stage')
     temperature         = models.CharField(blank=True, max_length=20,  default='', help_text='Treatment temperature')
     duration            = models.CharField(blank=True, max_length=20,  default='', help_text='Treatment duration')
     concentration       = models.CharField(blank=True, max_length=20,  default='', help_text='Treatment concentration')
@@ -166,8 +169,8 @@ class Sample(models.Model):
     #ADD temperature  as a treatment type
     pyrat_crossing_id   = models.CharField(max_length=10, default='', help_text='"Pyrat crossing ID')
     mutation            = models.ManyToManyField(Mutation,  default='', help_text='mutation(s)', related_name='sample_mutation')
-    parent              = models.ManyToManyField(Parent, blank=True,  default='', help_text='Parents information')
-    date_of_crossing    = models.DateField(blank=True, null=True, help_text="Date of cross (automatic from pyrat crossing ID)")
+    parent              = models.ManyToManyField(Parent, blank=True,  default='', help_text='Parents information (automatically filled from pyrat crossing ID)')
+    date_of_crossing    = models.DateField(blank=True, null=True, help_text="Date of cross (automatically filled from pyrat crossing ID)")
 
     def __str__(self):
         """String for representing the Model object (in Admin site etc.)"""
@@ -196,6 +199,7 @@ class InstrumentalCondition(models.Model):
         ('nikon',    'nikon'),
         ('zeiss',    'zeiss'),
         ('MiSeq',    'MiSeq'),
+        ('VAST', 'VAST'),
         ('NextSeq500',    'NextSeq500'),
         ('NovaSeq6000',    'NovaSeq6000'),
     )
@@ -230,7 +234,7 @@ class InstrumentalCondition(models.Model):
     instrument_name  = models.CharField(max_length=100, choices=INSTRUMENT_NAME, default='', help_text='Name of instrument')
     laser_intensity  = models.CharField(blank=True, max_length=100, default='', help_text='Laser intensity')
     laser_wavelength = models.CharField(blank=True, max_length=100, default='', help_text='Laser wave length')
-    temperature      = models.CharField(blank=True, max_length=20,  default='', help_text='Instrument temperature')
+    temperature      = models.CharField(blank=True, max_length=100,  default='', help_text='Instrument temperature')
 
     total_read  = models.CharField(blank=True,max_length=100, choices=TOTAL_READ, default='', help_text='Total number of reads')
     read_config  = models.CharField(blank=True,max_length=100, choices=READ_CONFIG, default='', help_text='Read configuration')
