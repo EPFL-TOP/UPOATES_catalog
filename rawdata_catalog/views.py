@@ -253,7 +253,7 @@ def rawdataset_catalog(request):
     if os.path.exists('/Users/helsens/Software/github/EPFL-TOP/UPOATES_catalog/metadatasummary.json'):
         metadata_file = open('/Users/helsens/Software/github/EPFL-TOP/UPOATES_catalog/metadatasummary.json')
     else:
-        metadata_file = open('/home/helsens/Software/UPOATES_catalog/metadatasummary.json'')
+        metadata_file = open('/home/helsens/Software/UPOATES_catalog/metadatasummary.json')
     metadata = json.load(metadata_file)
     data_list = metadata['data']
     n_newdatasets=0
