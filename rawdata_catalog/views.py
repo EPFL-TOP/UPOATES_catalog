@@ -252,8 +252,15 @@ def rawdataset_catalog(request):
     metadata_file=None
     if os.path.exists('/Users/helsens/Software/github/EPFL-TOP/UPOATES_catalog/metadatasummary.json'):
         metadata_file = open('/Users/helsens/Software/github/EPFL-TOP/UPOATES_catalog/metadatasummary.json')
+    elif os.path.isdir('/mnt/nas_rcp/Common/raw_data/metadata/'):
+        import glob
+        latestfile=glob.glob('/mnt/nas_rcp/Common/raw_data/metadata/*_latest.json')
+        if len(latestfile)!=1:
+            print('should not have more than 1 latest file')
+            print(latestfile)
+        metadata_file = open(latestfile[0])
     else:
-        metadata_file = open('/home/helsens/Software/UPOATES_catalog/metadatasummary.json')
+        print('not local and rcp not mounted, please do something')
     metadata = json.load(metadata_file)
     data_list = metadata['data']
     n_newdatasets=0
