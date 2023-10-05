@@ -51,7 +51,8 @@ class Person(models.Model):
     
     def __str__(self):
         """String for representing the Person object."""
-        return '{0}, {1}, {2}'.format(self.first_name,self.last_name,self.orcid)
+        if self.orcid!="": return '{0}, {1}, {2}'.format(self.first_name,self.last_name,self.orcid)
+        else return '{0}, {1}, {2}'.format(self.first_name,self.last_name,self.orcid)
                                                 
     class Meta:
         ordering = ("first_name", "last_name")
