@@ -53,6 +53,8 @@ class Person(models.Model):
         """String for representing the Person object."""
         return '{0}, {1}'.format(self.last_name, self.first_name)
                                                 
+    class Meta:
+        ordering = ("first_name", "last_name")
 
 #___________________________________________________________________________________________
 class Contributor(models.Model):
