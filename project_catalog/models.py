@@ -11,23 +11,23 @@ from contribution_catalog.models import Contribution
 #___________________________________________________________________________________________
 class ProjectTag(models.Model):
     """Model representing an experimental tag"""
-    name_short  = models.CharField(max_length=200, help_text="Short name for the project tag")
-    name_long   = models.CharField(blank=True, max_length=200, help_text="Long name the project tag")
+    name        = models.CharField(max_length=200, help_text="Short name for the project tag")
     description = models.TextField(blank=True,max_length=2000, help_text="Enter a brief description of the project tag")
 
     class Meta:
         verbose_name = 'Project tag'
         verbose_name_plural = 'Project tags'
+        ordering = ["name"]
+
 
     def get_absolute_url(self):
         """Returns the url to access a particular experimental tag instance."""
-        return reverse('treatment-detail', args=[str(self.id)])
+        return reverse('projecttag-detail', args=[str(self.id)])
     
     def __str__(self):
         """String for representing the Model object (in Admin site etc.)"""
-        return self.name_short
-    
-#___________________________________________________________________________________________
+        return    
+#____, self.name, self.status_______________________________________________________________________________________
 class Zenodo(models.Model):
     """Model representing a publication"""
     title  = models.CharField(max_length=200, help_text="Title for the zenodo entry")
@@ -72,19 +72,21 @@ class Project(models.Model):
     name         = models.CharField(default="", max_length=200, help_text="Name of the project")
     date         = models.DateField(null=True, help_text="Date field in format: MM/DD/YYYY")
     status       = models.CharField(max_length=20, choices=PROJ_STATUS, default='Ongoing', help_text='Status of the project')
-    experimental_dataset   = models.ManyToManyField(ExperimentalDataset, blank=True, help_text="Choose one or several experiment(s) for this project")
+    dataset      = models.ManyToManyField(ExperimentalDataset, help_text="Choose one or several experiment(s) for this project")
+    project_tag  = models.ManyToManyField(ProjectTag, help_text="Select project tag(s) for this project")
     description  = models.TextField(blank=True, max_length=2000, help_text="Enter a brief description of the project")
     publication  = models.ManyToManyField(Publication, blank=True, help_text="Select publication(s) for this project")
     zenodo       = models.ManyToManyField(Zenodo, blank=True, help_text="Select zenodo(s) for this project")
-    project_tag  = models.ManyToManyField(ProjectTag, help_text="Select project tag(s) for this experiment")
     contribution = models.ManyToManyField(Contribution, blank=True, help_text="Contribution(s) for this project")
+
     def get_absolute_url(self):
         """Returns the url to access a particular treatment instance."""
         return reverse('project-detail', args=[str(self.id)])
     
     def __str__(self):
         """String for representing the project object"""
-        return '{0}, {1}'.format(self.name, self.date)
+        return '{0}, {1}, {2}'.format(self.date, self.name, self.status)
 
-
+    class Meta:
+        ordering = ("date", "name")
 
