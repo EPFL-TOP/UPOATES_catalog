@@ -26,7 +26,8 @@ class ProjectTag(models.Model):
     
     def __str__(self):
         """String for representing the Model object (in Admin site etc.)"""
-        return    
+        return  self.name
+    
 #____, self.name, self.status_______________________________________________________________________________________
 class Zenodo(models.Model):
     """Model representing a publication"""

@@ -22,6 +22,8 @@ from experimentalcondition_catalog.models import ExperimentalCondition, Mutation
 import requests
 from requests.auth import HTTPBasicAuth
 
+import accesskeys as accessk
+
 # Create your views here.
 
 #___________________________________________________________________________________________
@@ -133,8 +135,8 @@ def add_mutations():
 #___________________________________________________________________________________________
 def fill_parents():
     
-    username = "1-b1e973b9ca4865f5287f7c7e093e15557699c7b6ac5c"
-    password = "3-03453a6afe7bc76122a0f1bce49f2952052d774e0d70"
+    username = accessk.PYRAT_username
+    password = accessk.PYRAT_password
     auth = HTTPBasicAuth(username, password)
     base_url = 'https://sv-pyrat-aquatic-test.epfl.ch/pyrat-aquatic-test/api/v3/'
     api_url_tanks     = base_url +'tanks'
