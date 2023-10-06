@@ -244,7 +244,7 @@ class InstrumentalCondition(models.Model):
     def __str__(self):
         """String for representing the Model object (in Admin site etc.)"""
 
-        toret='{0}, {1}, {2}'.format(self.id, self.name, self.instrument_type, self.instrument_name)
+        toret='{0}, {1}, {2}, {3}'.format(self.id, self.name, self.instrument_type, self.instrument_name)
         if self.laser_intensity!='':
             toret+=', {0}'.format(self.laser_intensity)
         if self.laser_wavelength!='':
