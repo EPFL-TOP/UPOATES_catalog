@@ -244,7 +244,19 @@ class InstrumentalCondition(models.Model):
     def __str__(self):
         """String for representing the Model object (in Admin site etc.)"""
 
-        return '{0}, {1}, {2}'.format(self.id, self.instrument_type, self.instrument_name)
+        toret='{0}, {1}, {2}'.format(self.id, self.name, self.instrument_type, self.instrument_name)
+        if self.laser_intensity!='':
+            toret+=', {0}'.format(self.laser_intensity)
+        if self.laser_wavelength!='':
+            toret+=', {0}'.format(self.laser_wavelength)
+        if self.temperature!='':
+            toret+=', {0}'.format(self.temperature)
+        if self.total_read!='':
+            toret+=', {0}'.format(self.total_read)
+        if self.read_config!='':
+            toret+=', {0}'.format(self.read_config)
+
+        return toret
 
     class Meta:
         ordering = ("instrument_type", "instrument_name")
