@@ -230,6 +230,7 @@ class InstrumentalCondition(models.Model):
         ('26/90 (10XG 5\'GE v2)', '26/90 (10XG 5\'GE v2)'),
     )
 
+    #name             = models.CharField(max_length=100, choices=INSTRUMENTALCOND_TYPE, default='', help_text='Type of instrument')
     instrument_type  = models.CharField(max_length=100, choices=INSTRUMENTALCOND_TYPE, default='', help_text='Type of instrument')
     instrument_name  = models.CharField(max_length=100, choices=INSTRUMENT_NAME, default='', help_text='Name of instrument')
     laser_intensity  = models.CharField(blank=True, max_length=100, default='', help_text='Laser intensity')
@@ -241,7 +242,8 @@ class InstrumentalCondition(models.Model):
 
     def __str__(self):
         """String for representing the Model object (in Admin site etc.)"""
-        return '{0}, {1}'.format(self.instrument_type, self.instrument_name)
+
+        return '{0}, {1}, {2}'.format(self.id, self.instrument_type, self.instrument_name)
 
     class Meta:
         ordering = ("instrument_type", "instrument_name")
