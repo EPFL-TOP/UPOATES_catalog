@@ -18,11 +18,11 @@
 
 <div style="margin-left:10px;margin-top:20px">
   <h4>Affiliation(s)</h4>
-  <div style="margin-left:10px;margin-top:20px">
+  <div style="margin-left:10px;margin-top:10px">
     <dl>
       {% for contributor in person.contributor_set.all %}
     {% for affiliation in contributor.affiliation.all %}
-      <dd><a href="{% url 'affiliation-detail' affiliation.pk %}">{{affiliation}}</a> </dd>
+      <a href="{% url 'affiliation-detail' affiliation.pk %}">{{affiliation}}</a> </br>
     {% endfor %}
   {% endfor %}
 </dl>  
@@ -33,12 +33,12 @@
 
 <div style="margin-left:10px;margin-top:20px">
 <h4>Projects</h4>
-<div style="margin-left:10px;margin-top:20px">
+<div style="margin-left:10px;margin-top:10px">
   <dl>
   {% for contributor in person.contributor_set.all %}
     {% for contribution in contributor.contribution_set.all %}
       {% for project in contribution.project_set.all %}
-          <dd><a href="{% url 'project-detail' project.pk %}">{{project}}</a></dd>
+          <a href="{% url 'project-detail' project.pk %}">{{project}}</a></br>
       {% endfor %}
     {% endfor %}
   {% endfor %}
@@ -51,12 +51,12 @@
 <div style="margin-left:10px;margin-top:20px">
 <h4>Experiments</h4>
 <dl>
-  <div style="margin-left:10px;margin-top:20px">
+  <div style="margin-left:10px;margin-top:10px">
 
   {% for contributor in person.contributor_set.all %}
     {% for contribution in contributor.contribution_set.all %}
       {% for experiment in contribution.experiment_set.all %}
-      <dd><a href="{% url 'experiment-detail' experiment.pk %}">{{experiment}}</a></dd>
+      <a href="{% url 'experiment-detail' experiment.pk %}">{{experiment}}</a></br>
       {% endfor %}
     {% endfor %}
   {% endfor %}
