@@ -141,10 +141,14 @@
     <strong>File list</strong>
 </div>
 
-    {% for file in rawdataset.files_data.files   %}
-        <div style="margin-left:60px;margin-top:0px">
-            <strong>{{ forloop.counter }}{{": "}}</strong>{{file.name}} {{", "}} {{file.size|divide:1000000000  |floatformat:4 }} {{" GB"}}</br>
-</div>
+
+
+
+
+{% for file in rawdataset.files_data.files   %}
+    <div style="margin-left:60px;margin-top:0px">
+        <strong>{{ forloop.counter }}{{": "}}</strong>{{file.name}} {{", "}} {{file.size|divide:1000000000  |floatformat:4 }} {{" GB"}}</br>
+    </div>
 {% endfor %}
 
 

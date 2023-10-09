@@ -70,9 +70,9 @@ class Contributor(models.Model):
     
     def __str__(self):
         """String for representing the Contributor object."""
-        affiliation=""
-        if len(self.affiliation.values())>0: affiliation = self.affiliation.values()[0]["short_name"]
-        for x in range(1,len(self.affiliation.values())): affiliation+=', '+self.affiliation.values()[x]["short_name"]
+        affiliations=""
+        if len(self.affiliation.values())>0: affiliations = self.affiliation.values()[0]["short_name"]
+        for x in range(1,len(self.affiliation.values())): affiliations+=', '+self.affiliation.values()[x]["short_name"]
 
         #type=""
         #if len(self.type.values())>0: type = self.type.values()[0]["type"]
@@ -82,41 +82,49 @@ class Contributor(models.Model):
         #if len(self.origin.values())>0: origin = self.origin.values()[0]["origin"]
         #for x in range(1,len(self.origin.values())): origin+=', '+self.origin.values()[x]["origin"]
 
-        return '{0}, {1}, ({2})'.format(self.person, self.email_address, affiliation)
+        return '{0}, {1}, ({2})'.format(self.person, self.email_address, affiliations)
 
 
-#___________________________________________________________________________________________
-class ContributionType(models.Model):
-    """Model representing a type contribution"""
-    type  = models.CharField(max_length=200, help_text="Type of contribution")
-
-    class Meta:
-        verbose_name = 'Type of contribution'
-        verbose_name_plural = 'Type of contributions'
-
-    def __str__(self):
-        """String for representing the Model object (in Admin site etc.)"""
-        return self.type
 
 #___________________________________________________________________________________________
-class ContributionOrigin(models.Model):
-    """Model representing the origin of a contribution"""
-    origin  = models.CharField(max_length=200, help_text="Origin of the contribution")
-
-    class Meta:
-        verbose_name = 'Origin of the contribution'
-        verbose_name_plural = 'Origin of the contributions'
-
-    def __str__(self):
-        """String for representing the Origin object"""
-        return self.origin
+#class ContributionOrigin(models.Model):
+#    """Model representing the origin of a contribution"""
+#    origin  = models.CharField(max_length=200, help_text="Origin of the contribution")
+#
+#    class Meta:
+#        verbose_name = 'Origin of the contribution'
+#        verbose_name_plural = 'Origin of the contributions'
+#
+#    def __str__(self):
+#        """String for representing the Origin object"""
+#        return self.origin
     
-    #___________________________________________________________________________________________
+
+#___________________________________________________________________________________________
 class Contribution(models.Model):
     """Model representing an experimental contribution."""
-    contributor   = models.ManyToManyField(Contributor, help_text="Select a contributor")
-    type          = models.ManyToManyField(ContributionType,   help_text="Select one or several type of contribution for this contributor")
-    origin        = models.ManyToManyField(ContributionOrigin, help_text="Select one or several origin of contribution for this contributor")
+    CONTRIB_TYPE = (
+        ('experimental', 'Experimental'),
+        ('analysis',     'Analysis'),
+    )
+    CONTRIB_LEVEL = (
+        ('0-20%', '0-20%'),
+        ('20-40%', '20-40%'),
+        ('40-60%', '40-60%'),
+        ('60-80%', '60-80%'),
+        ('80-100%', '80-100%'),
+    )
+
+    CONTRIB_ORIGIN = (
+        ('EPFL-UPOATES','EPFL-UPOATES'),
+    )
+
+    #contributor   = models.OneToOneField(Contributor, default='',  on_delete=models.CASCADE, help_text="Raw dataset for this experimental dataset.")
+
+    contributor   = models.ManyToManyField(Contributor, help_text="Select a contributor for this contribution")
+    level         = models.CharField(default='', max_length=200, choices=CONTRIB_LEVEL, help_text="Select a level of contribution for this contributor")
+    type          = models.CharField(default='', max_length=200, choices=CONTRIB_TYPE, help_text="Select a type of contribution for this contributor")
+    origin        = models.CharField(default='', max_length=200, choices=CONTRIB_ORIGIN, help_text="Select the origin of the contribution for this contributor")
     description   = models.TextField(blank=True, max_length=2000, help_text="Enter a brief description of the contribution for this contributor")
 
     def get_absolute_url(self):
@@ -136,12 +144,5 @@ class Contribution(models.Model):
         if len(self.contributor.all())>0: contributor=str(self.contributor.all()[0])
         for x in range(1,len(self.contributor.all())): contributor+="; "+str(self.contributor.all()[x])
 
-        type = ""
-        if len(self.type.values())>0: type = self.type.values()[0]["type"]
-        for x in range(1,len(self.type.values())): type+=', '+self.type.values()[x]["type"]
 
-        origin = ""
-        if len(self.origin.values())>0: origin = self.origin.values()[0]["origin"]
-        for x in range(1,len(self.origin.values())): origin+=', '+self.origin.values()[x]["origin"]
-
-        return '{0}, ({1}), ({2})'.format(contributor, type, origin)
+        return '{0}, {1}, {2}, {3}'.format(contributor, self.level, self.type, self.origin)
