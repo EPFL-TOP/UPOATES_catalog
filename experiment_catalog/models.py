@@ -43,6 +43,8 @@ class Experiment(models.Model):
         """String for representing the Experiment object."""
         return '{0}, {1}'.format(self.experiment_name, self.date)
     
+    class Meta:
+        ordering = ("experiment_name","date")
 
 #___________________________________________________________________________________________
 class ExperimentalDataset(models.Model):
