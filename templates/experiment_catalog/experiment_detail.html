@@ -13,10 +13,11 @@
   <strong>Contributions:</strong>  
   <div style="margin-left:20px;margin-top:0px">
       {% for cont in experiment.contribution.all %}
-
+          {{cont}}
           <strong>contributor: </strong>{{cont.contributor.all|join:", "}} <br/>
-          <strong>type: </strong>{{cont.type.all|join:", "}} <br/>
-          <strong>origin: </strong>{{cont.origin.all|join:", "}} <br/>
+          <strong>type: </strong>{{cont.type}} <br/>
+          <strong>origin: </strong>{{cont.origin}} <br/>
+          <strong>level: </strong>{{cont.level}} <br/>
           <strong>description: </strong> {{cont.description}} <br/> 
           {% if forloop.counter != experiment.contribution.all|length %} 
               <br/>

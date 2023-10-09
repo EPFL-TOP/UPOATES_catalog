@@ -95,8 +95,9 @@
             {% for cont in rawdataset.experimentaldataset.experiment.contribution.all %}
 
                 <strong>contributor: </strong>{{cont.contributor.all|join:", "}} <br/>
-                <strong>type: </strong>{{cont.type.all|join:", "}} <br/>
-                <strong>origin: </strong>{{cont.origin.all|join:", "}} <br/>
+                <strong>type: </strong>{{cont.type}} <br/>
+                <strong>origin: </strong>{{cont.origin}} <br/>
+                <strong>level: </strong>{{cont.level}} <br/>
                 <strong>description: </strong> {{cont.description}} <br/> 
                 {% if forloop.counter != rawdataset.experimentaldataset.experiment.contribution.all|length %} 
                     <br/>
