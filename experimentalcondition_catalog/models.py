@@ -126,8 +126,10 @@ class Treatment(models.Model):
     
     def __str__(self):
         """String for representing the Model object (in Admin site etc.)"""
-        return "{0}, {1}, {2}".format(self.name, self.type, self.developmental_stage)
+        return "{0}, {1}, {2}, {3}".format(self.id, self.name, self.type, self.developmental_stage)
 
+    class Meta:
+        ordering = ["-id"]
 
 #___________________________________________________________________________________________
 class Injection(models.Model):
@@ -153,8 +155,10 @@ class Injection(models.Model):
     
     def __str__(self):
         """String for representing the Model object (in Admin site etc.)"""
-        return "{0}, {1}, {2}".format(self.name, self.type, self.developmental_stage)
+        return "{0}, {1}, {2}, {3}".format(self.id, self.name, self.type, self.developmental_stage)
 
+    class Meta:
+        ordering = ["-id"]
 
 #___________________________________________________________________________________________
 class Sample(models.Model):
@@ -259,7 +263,8 @@ class InstrumentalCondition(models.Model):
         return toret
 
     class Meta:
-        ordering = ("instrument_type", "instrument_name")
+        #ordering = ("instrument_type", "instrument_name")
+        ordering = ["-id"]
 
 
 #___________________________________________________________________________________________
