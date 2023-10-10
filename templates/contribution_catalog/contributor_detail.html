@@ -4,12 +4,18 @@
 
 <h2>Contributor: {{ contributor.person }} </h2>
 <hr>
-<p><strong>First Name:</strong> {{ contributor.person.first_name }}</p>
-<p><strong>Last Name:</strong> {{ contributor.person.last_name }}</p>
-<p><strong>Email:</strong> {{ contributor.email_address }}</p>
-<p><strong>Orcid:</strong> {{ contributor.person.orcid }}</p>
-<p><strong>Affiliation(s):</strong> {{ contributor.affiliation.all|join:'<br>' }}</p>
-<!--p><strong>Type(s):</strong> {{ contributor.affiliation.all|join:'<br>' }}</p-->
+
+<div style="margin-left:10px;margin-top:20px">
+  <h4>Contributor details</h4>
+</div>
+<div style="margin-left:30px;margin-top:10px">
+
+<strong>First Name:</strong> {{ contributor.person.first_name }}</br>
+<strong>Last Name:</strong> {{ contributor.person.last_name }}</br>
+<strong>Email:</strong> {{ contributor.email_address }}</br>
+<strong>Orcid:</strong> {{ contributor.person.orcid }}</br>
+<strong>Affiliation(s):</strong> {{ contributor.affiliation.all|join:'<br>' }}</br>
+</div>
 
 <hr>
 
@@ -25,3 +31,55 @@
 
 </div>
 {% endblock %}
+
+
+
+
+
+
+
+
+  <strong>Starting date:</strong> {{ project.date }}</br>
+  <strong>Status:</strong> {{ project.status }}</br>
+  <strong>Tags:</strong> {{ project.project_tag.all|join:", "  }}</br>
+  <strong>Description:</strong> {{ project.description}}</br>
+  {% if project.zenodo.all %}
+  <strong>Zenodo:</strong> {{ project.zenodo.all  }}</br>
+  {% endif %}
+  {% if project.publication.all %}
+  <strong>publication:</strong> {{ project.publication.all  }}</br>
+  {% endif %}
+  <strong>Contributions:</strong> </br>
+  <div style="margin-left:20px;margin-top:0px">
+    {% for cont in project.contribution.all %}
+        <strong>contributor: </strong>{{cont.contributor.all|join:", "}} <br/>
+        <strong>type: </strong>{{cont.type}} <br/>
+        <strong>origin: </strong>{{cont.origin}} <br/>
+        <strong>level: </strong>{{cont.level}} <br/>
+        <strong>description: </strong> {{cont.description}} <br/> 
+        {% if forloop.counter != experiment.contribution.all|length %} 
+            <br/>
+        {% endif %}
+    {% endfor %}
+    <br/>
+</div>
+
+
+</div>
+
+<hr>
+
+<h4>RawDataset</h4>
+<div style="margin-left:20px;margin-top:0px">
+
+{% for rds in project.dataset.all %}
+<strong>{{forloop.counter}}</strong>  <a href="{{ rds.raw_dataset.get_absolute_url }}">
+  {{ rds.raw_dataset }}</a> <br>
+{% endfor %}
+</div>
+
+
+
+
+
+

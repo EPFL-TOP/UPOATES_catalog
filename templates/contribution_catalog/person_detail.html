@@ -18,7 +18,7 @@
 
 <div style="margin-left:10px;margin-top:20px">
   <h4>Affiliation(s)</h4>
-  <div style="margin-left:10px;margin-top:10px">
+  <div style="margin-left:10px;margin-top:20px">
     <dl>
       {% for contributor in person.contributor_set.all %}
     {% for affiliation in contributor.affiliation.all %}
@@ -33,7 +33,7 @@
 
 <div style="margin-left:10px;margin-top:20px">
 <h4>Projects</h4>
-<div style="margin-left:10px;margin-top:10px">
+<div style="margin-left:10px;margin-top:20px">
   <dl>
   {% for contributor in person.contributor_set.all %}
     {% for contribution in contributor.contribution_set.all %}
@@ -51,7 +51,7 @@
 <div style="margin-left:10px;margin-top:20px">
 <h4>Experiments</h4>
 <dl>
-  <div style="margin-left:10px;margin-top:10px">
+  <div style="margin-left:10px;margin-top:20px">
 
   {% for contributor in person.contributor_set.all %}
     {% for contribution in contributor.contribution_set.all %}

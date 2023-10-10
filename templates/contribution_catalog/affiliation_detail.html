@@ -2,12 +2,47 @@
 
 {% block content %}
 
-<h1>Affiliation: {{ affiliation.short_name }} </h1>
-<p><strong>Full name:</strong> {{ affiliation.long_name }}</p>
-<p><strong>Department:</strong> {{ affiliation.department }}</p>
-<p><strong>Institute:</strong> {{ affiliation.institute }}</p>
-<p><strong>Laboratory:</strong> {{ affiliation.laboratory }}</p>
-<p><strong>Country:</strong> {{ affiliation.country }}</p>
+<h2>Affiliation: {{ affiliation.short_name }} </h2>
+<hr>
+<div style="margin-left:10px;margin-top:20px">
+    <h4>Affiliation details</h4>
+    <div style="margin-left:10px;margin-top:20px">
 
+<strong>Full name:</strong> {{ affiliation.long_name }}</br>
+<strong>Country:</strong> {{ affiliation.country }}</br>
+{% if affiliation.department %}<strong>Department:</strong> {{ affiliation.department }}</br> {% endif %}
+{% if affiliation.institute %}<strong>Institute:</strong> {{ affiliation.institute }}</br>{% endif %}
+{% if affiliation.laboratory %}<strong>Laboratory:</strong> {{ affiliation.laboratory }}</br>{% endif %}
+{% if affiliation.laboratory_internal %}<strong>Laboratory internal:</strong> {{ affiliation.laboratory_internal }}</br>{% endif %}
+
+</div>
+<hr>
+
+<h4>Contributors:</h2>
+    <div style="margin-left:10px;margin-top:10px">
+
+    {% for contributor in affiliation.contributor_set.all %}
+    <a href="{% url 'contributor-detail' contributor.pk %}">{{contributor}}</a></br>
+    {% endfor %}
+
+</div>
+</div>
+
+
+<div style="margin-left:10px;margin-top:20px">
+    {% for contributor in affiliation.contributor_list %}
+    {{contributor}}
+
+    {% endfor %}
+
+<h4>Persons:</h2>
+    <div style="margin-left:10px;margin-top:10px">
+    {% for contributor in affiliation.contributor_set.all %}
+    {{contributor_person}}
+
+    {% endfor %}
+
+</div>
+</div>
 
 {% endblock %}
