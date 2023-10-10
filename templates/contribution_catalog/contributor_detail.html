@@ -14,22 +14,52 @@
 <strong>Last Name:</strong> {{ contributor.person.last_name }}</br>
 <strong>Email:</strong> {{ contributor.email_address }}</br>
 <strong>Orcid:</strong> {{ contributor.person.orcid }}</br>
-<strong>Affiliation(s):</strong> {{ contributor.affiliation.all|join:'<br>' }}</br>
+<strong>Affiliation(s):</strong> 
+
+{% for affiliation in contributor.affiliation.all %}
+<a href="{% url 'affiliation-detail' affiliation.pk %}">{{affiliation}}</a> </br>
+{% endfor %}
+
+
 </div>
 
 <hr>
 
-<div style="margin-left:20px;margin-top:20px">
-<h4>Experiments</h4>
 
-<dl>
-{% for person in person.person_set.all %}
-  <dt><a href="{% url 'person-detail' person.pk %}">{{person}}</a> ({{person.personinstance_set.all.count}})</dt>
-  <dd>{{ person.summary }}</dd>
-{% endfor %}
-</dl>
 
-</div>
+<div style="margin-left:10px;margin-top:20px">
+  <h4>Projects</h4>
+  <div style="margin-left:10px;margin-top:20px">
+    <dl>
+      {% for contribution in contributor.contribution_set.all %}
+        {% for project in contribution.project_set.all %}
+            <a href="{% url 'project-detail' project.pk %}">{{project}}</a></br>
+        {% endfor %}
+      {% endfor %}
+  </dl>
+  </div>
+  </div>
+
+
+
+  <div style="margin-left:10px;margin-top:20px">
+    <h4>Experiments</h4>
+    <dl>
+      <div style="margin-left:10px;margin-top:20px">
+    
+        {% for contribution in contributor.contribution_set.all %}
+          {% for experiment in contribution.experiment_set.all %}
+          <a href="{% url 'experiment-detail' experiment.pk %}">{{experiment}}</a></br>
+          {% endfor %}
+        {% endfor %}
+    </div>
+    
+    </dl>
+    </div>
+
+
+
+
 {% endblock %}
 
 
@@ -38,45 +68,6 @@
 
 
 
-
-  <strong>Starting date:</strong> {{ project.date }}</br>
-  <strong>Status:</strong> {{ project.status }}</br>
-  <strong>Tags:</strong> {{ project.project_tag.all|join:", "  }}</br>
-  <strong>Description:</strong> {{ project.description}}</br>
-  {% if project.zenodo.all %}
-  <strong>Zenodo:</strong> {{ project.zenodo.all  }}</br>
-  {% endif %}
-  {% if project.publication.all %}
-  <strong>publication:</strong> {{ project.publication.all  }}</br>
-  {% endif %}
-  <strong>Contributions:</strong> </br>
-  <div style="margin-left:20px;margin-top:0px">
-    {% for cont in project.contribution.all %}
-        <strong>contributor: </strong>{{cont.contributor.all|join:", "}} <br/>
-        <strong>type: </strong>{{cont.type}} <br/>
-        <strong>origin: </strong>{{cont.origin}} <br/>
-        <strong>level: </strong>{{cont.level}} <br/>
-        <strong>description: </strong> {{cont.description}} <br/> 
-        {% if forloop.counter != experiment.contribution.all|length %} 
-            <br/>
-        {% endif %}
-    {% endfor %}
-    <br/>
-</div>
-
-
-</div>
-
-<hr>
-
-<h4>RawDataset</h4>
-<div style="margin-left:20px;margin-top:0px">
-
-{% for rds in project.dataset.all %}
-<strong>{{forloop.counter}}</strong>  <a href="{{ rds.raw_dataset.get_absolute_url }}">
-  {{ rds.raw_dataset }}</a> <br>
-{% endfor %}
-</div>
 
 
 
