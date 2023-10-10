@@ -58,12 +58,13 @@ class Parent(models.Model):
     age_at_crossing    = models.CharField(max_length=5, default='', help_text="Age at crossing in days")
     pyrat_crossing_id  = models.CharField(max_length=10, default='', help_text='Pyrat crossing id')
     mutation_grade     = models.CharField(max_length=100, default='', help_text='Parents mutation(s)')
+
     def __str__(self):
         """String for representing the Model object (in Admin site etc.)"""
-        return 'crossID: {0}, Age at crossing: {1} days'.format(self.pyrat_crossing_id, self.age_at_crossing)
+        return '{0}, crossID: {1}, Age at crossing: {2} days'.format(self.id, self.pyrat_crossing_id, self.age_at_crossing)
 
-{'crossing_id': 5316, 'status': 'set-up', 'date_of_record': '2023-07-12', 'strain_name_with_id': '13 - Looping_1, Heidi_2', 'description': 'Training crossing in MST. Requested by Rohde.', 'tanks': {'parents': [{'tank_id': 5399, 'strain_id': 13, 'strain_name': 'Looping_1, Heidi_2', 'strain_name_id': 13, 'strain_name_with_id': '13 - Looping_1, Heidi_2', 'mutations': [{'mutation_id': 3, 'mutation_name': 'heidi', 'mutation_name_official': 'unpublished', 'mutation_grade_id': 5, 'mutation_grade_name': 'Het'}, {'mutation_id': 2, 'mutation_name': 'looping', 'mutation_name_official': 'TgBAC(her1:Venus)', 'mutation_grade_id': 5, 'mutation_grade_name': 'Het'}], 'number_of_male': 5, 'number_of_female': 5, 'number_of_unknown': 0, 'date_of_birth': '2022-06-17'}], 'children': []}}
-
+    class Meta:
+        ordering = ['-id']
 
 #___________________________________________________________________________________________
 class MutationName(models.Model):

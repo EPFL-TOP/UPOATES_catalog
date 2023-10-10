@@ -106,6 +106,7 @@ class Contribution(models.Model):
     CONTRIB_TYPE = (
         ('experimental', 'Experimental'),
         ('analysis',     'Analysis'),
+        ('design/brainstorming',     'Design/Brainstorming'),
     )
     CONTRIB_LEVEL = (
         ('0-20%', '0-20%'),
@@ -122,7 +123,7 @@ class Contribution(models.Model):
     #contributor   = models.OneToOneField(Contributor, default='',  on_delete=models.CASCADE, help_text="Raw dataset for this experimental dataset.")
 
     contributor   = models.ManyToManyField(Contributor, help_text="Select a contributor for this contribution")
-    level         = models.CharField(default='', max_length=200, choices=CONTRIB_LEVEL, help_text="Select a level of contribution for this contributor")
+    #level         = models.CharField(default='', max_length=200, choices=CONTRIB_LEVEL, help_text="Select a level of contribution for this contributor")
     type          = models.CharField(default='', max_length=200, choices=CONTRIB_TYPE, help_text="Select a type of contribution for this contributor")
     origin        = models.CharField(default='', max_length=200, choices=CONTRIB_ORIGIN, help_text="Select the origin of the contribution for this contributor")
     description   = models.TextField(blank=True, max_length=2000, help_text="Enter a brief description of the contribution for this contributor")
@@ -145,4 +146,5 @@ class Contribution(models.Model):
         for x in range(1,len(self.contributor.all())): contributor+="; "+str(self.contributor.all()[x])
 
 
-        return '{0}, {1}, {2}, {3}'.format(contributor, self.level, self.type, self.origin)
+        #return '{0}, {1}, {2}, {3}'.format(contributor, self.level, self.type, self.origin)
+        return '{0}, {1}, {2}'.format(contributor, self.type, self.origin)
