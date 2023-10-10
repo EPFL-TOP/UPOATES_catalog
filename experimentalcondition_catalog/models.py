@@ -176,10 +176,10 @@ class Sample(models.Model):
         """String for representing the Model object (in Admin site etc.)"""
         #parent_lines = "("+", ".join(str(par) for par in self.parent_line.all())+")"
         mutations =  ", ".join("("+str(par)+")" for par in self.mutation.all())
-        return '{0}, {1}, {2}, {3}'.format(self.specie, self.developmental_stage, self.pyrat_crossing_id, mutations)
+        return '{0}, {1}, {2}, {3}, {4}'.format(self.id, self.specie, self.developmental_stage, self.pyrat_crossing_id, mutations)
 
     class Meta:
-        ordering = ("specie", "developmental_stage")
+        ordering = ["-id"] #("specie", "developmental_stage")
 
 
 
