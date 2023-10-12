@@ -34,8 +34,10 @@ class RawDataset(models.Model):
 
     data_type       = models.CharField(max_length=100, help_text='Type of data for this dataset (reflecting the the RCP storage categories)')
     data_name       = models.CharField(max_length=100, help_text="Name of the experimental dataset folder on the RCP storage.")
-    number_of_files = models.CharField(max_length=10, help_text='Number of files for this dataset.', default='')
-    total_size      = models.CharField(max_length=100, help_text='Total size for this dataset (in bytes).', default='')
+    number_of_raw_files = models.CharField(max_length=10, help_text='Number of files for this dataset.', default='')
+    total_raw_size      = models.CharField(max_length=100, help_text='Total size for this dataset (in bytes).', default='')
+    number_of_other_files = models.CharField(max_length=10, help_text='Number of files for this dataset.', default='')
+    total_other_size      = models.CharField(max_length=100, help_text='Total size for this dataset (in bytes).', default='')
     data_status     = models.CharField(max_length=100, choices=DATA_STATUS, default='', help_text='Status of the data on the RCP storage.')
     date_added      = models.DateField(null=True, help_text="Date automatically registered (when pushing the refresh button)")
     date_removed    = models.DateField(blank=True, null=True, help_text="Date when the rawdataset is removed from RCP")

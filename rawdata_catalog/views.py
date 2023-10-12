@@ -267,24 +267,38 @@ def rawdataset_catalog(request):
     n_newsize=0
 
     n_totdatasets=0
-    n_totfiles=0
-    n_totsize=0
+    n_totfiles_raw=0
+    n_totsize_raw=0
+    n_totfiles_other=0
+    n_totsize_other=0
+
     for data in data_list:
         for key, value in data.items():
             #CLEMENT SPECIFIC TO MY MAC
             newkey=key.replace("/Volumes/upoates/Common/raw_data/","")
             if newkey in list_uid:
                 n_totdatasets+=1
-                n_totfiles+=len(value["data"]["raw_files"])
+                n_totfiles_raw+=len(value["data"]["raw_files"])
+                n_totfiles_other+=len(value["data"]["other_files"])
                 for f in value["data"]["raw_files"]:
-                    n_totsize+=int(f["size"])
+                    n_totsize_raw+=int(f["size"])
+                for f in value["data"]["other_files"]:
+                    n_totsize_other+=int(f["size"])
+                
+                print('===========================================================================================list result ',list_result)
             else:
-                n_files=len(value["data"]["raw_files"])
-                tot_size=0
+                n_files_raw=len(value["data"]["raw_files"])
+                n_files_other=len(value["data"]["other_files"])
+                tot_size_raw=0
+                tot_size_other=0
                 for f in value["data"]["raw_files"]:
-                    tot_size+=int(f["size"])
+                    tot_size_raw+=int(f["size"])
+                for f in value["data"]["other_files"]:
+                    tot_size_other+=int(f["size"])
+                    
                 rawds = RawDataset(data_type=os.path.split(newkey)[0], data_name=os.path.split(newkey)[-1], data_status="available",
-                                  number_of_files=n_files, total_size=tot_size,raw_files={'files':value["data"]["raw_files"]}, other_files={'files':value["data"]["other_files"]},
+                                  number_of_raw_files=n_files_raw, total_raw_size=tot_size_raw, raw_files={'files':value["data"]["raw_files"]}, 
+                                  number_of_other_files=n_files_other, total_other_size=tot_size_other, other_files={'files':value["data"]["other_files"]},
                                   date_added=value["date"])
                 rawds.save()
 
