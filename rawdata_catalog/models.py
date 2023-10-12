@@ -57,7 +57,7 @@ class RawDataset(models.Model):
     def __str__(self):
         """String for representing the RawDataset object."""
         #return ''
-        return '{0}, {1}, {2}, {3}, {4}'.format(self.data_type, self.data_name, self.data_status, self.number_of_files, self.total_size)
+        return '{0}, {1}, {2}, {3}, {4}'.format(self.data_type, self.data_name, self.data_status, self.number_of_raw_files, self.total_raw_size)
 
 
     class Meta:
