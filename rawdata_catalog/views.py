@@ -284,7 +284,7 @@ def rawdataset_catalog(request):
                 for f in value["data"]["raw_files"]:
                     tot_size+=int(f["size"])
                 rawds = RawDataset(data_type=os.path.split(newkey)[0], data_name=os.path.split(newkey)[-1], data_status="available",
-                                  number_of_files=n_files, total_size=tot_size,raw_files={'files':value["data"]["raw_files"]}, other_files={'other_files':value["data"]["other_files"]},
+                                  number_of_files=n_files, total_size=tot_size,raw_files={'files':value["data"]["raw_files"]}, other_files={'files':value["data"]["other_files"]},
                                   date_added=value["date"])
                 rawds.save()
 
