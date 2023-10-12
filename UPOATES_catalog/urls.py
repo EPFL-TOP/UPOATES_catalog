@@ -30,7 +30,7 @@ urlpatterns += [
     path('experiment_catalog/', include('experiment_catalog.urls')),
     path('contribution_catalog/', include('contribution_catalog.urls')),
     path('project_catalog/', include('project_catalog.urls')),
-    #path('experimentalcondition_catalog/', include('experimentalcondition_catalog.urls')),
+    path('experimentalcondition_catalog/', include('experimentalcondition_catalog.urls')),
 ]
 
 

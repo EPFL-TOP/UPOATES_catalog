@@ -6,7 +6,10 @@ from django import forms
 
 from .models import RawDataset
 
-admin.site.register(RawDataset)
+class RawDatasetAdmin(admin.ModelAdmin):
+    search_fields = ["data_type","data_name"]
+
+admin.site.register(RawDataset, RawDatasetAdmin)
 
 
 #@admin.register(Entry)
