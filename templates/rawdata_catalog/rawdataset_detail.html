@@ -139,16 +139,21 @@
         <strong>Compression:</strong> {{rawdataset.compression}}</br>
     {% endif %}
 
-    <strong>File list</strong>
+    <strong>Raw files list</strong>
 </div>
 
-
-
-
-
-{% for file in rawdataset.files_data.files   %}
+{% for file in rawdataset.raw_files.files   %}
     <div style="margin-left:60px;margin-top:0px">
         <strong>{{ forloop.counter }}{{": "}}</strong>{{file.name}} {{", "}} {{file.size|divide:1000000000  |floatformat:4 }} {{" GB"}}</br>
+    </div>
+{% endfor %}
+
+<div style="margin-left:40px;margin-top:1px">
+    <strong>Other files list</strong>
+</div>
+{% for file in rawdataset.other_files.files   %}
+    <div style="margin-left:60px;margin-top:0px">
+        <strong>{{ forloop.counter }}{{": "}}</strong>{{file.name}} {{", "}} {{file.size|divide:1000000  |floatformat:4 }} {{" MB"}}</br>
     </div>
 {% endfor %}
 

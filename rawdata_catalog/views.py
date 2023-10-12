@@ -25,7 +25,7 @@ from requests.auth import HTTPBasicAuth
 import accesskeys as accessk
 
 # Create your views here.
-
+DEBUG=False
 #___________________________________________________________________________________________
 def add_mutations(): 
     mutation_name = [
@@ -130,8 +130,6 @@ def add_mutations():
         list_grades_uid.append(grade)
         print('adding mutation grade ',grade)
 
-
-
 #___________________________________________________________________________________________
 def fill_parents():
     
@@ -151,20 +149,20 @@ def fill_parents():
     list_parent_pyrat = [entry for entry in parents] 
     list_parent_pyrat_uid = [e["pyrat_crossing_id"] for e in list_parent_pyrat]
 
-    print('---------------------------pyrat uid ',list_pyrat_uid)
-    print('---------------------------pyrat parent uid ',list_parent_pyrat_uid)
+    if DEBUG: print('---------------------------pyrat uid ',list_pyrat_uid)
+    if DEBUG: print('---------------------------pyrat parent uid ',list_parent_pyrat_uid)
     for xid in list_pyrat_uid:
 
 
-        print('========------------------==================, ',xid)
+        if DEBUG: print('========------------------==================, ',xid)
         if xid in list_parent_pyrat_uid: continue
 
         query = {'tk':['strain_id', 'strain_name', 'strain_name_id','strain_name_with_id','mutations','date_of_birth'],'crossing_id':'{}'.format(str(xid))}
-        print(query)
+        if DEBUG: print(query)
         response = requests.get(api_url_crossings, auth=auth, params=query )
-        print(response)
+        if DEBUG: print(response)
         response_json = response.json()
-        print(response_json)
+        if DEBUG: print(response_json)
 
         sample_with_date = Sample.objects.get(pyrat_crossing_id=xid)
         if sample_with_date.date_of_crossing == '' or sample_with_date.date_of_crossing == None:
@@ -175,15 +173,15 @@ def fill_parents():
   
             d1 = datetime.datetime.strptime(response_json[0]['date_of_record'], "%Y-%m-%d")
             d2 = datetime.datetime.strptime(p["date_of_birth"], "%Y-%m-%d")
-            print('[rewewwerwerwerfwdfegjfhgjuafhgjdafjdk;zjkdjaf;jeakfjEKAfjkeAJf;ieAJfejwfkjZI]      ',d2-d1)
+            if DEBUG: print('[rewewwerwerwerfwdfegjfhgjuafhgjdafjdk;zjkdjaf;jeakfjEKAfjkeAJf;ieAJfejwfkjZI]      ',d2-d1)
             delta = d1 - d2
             
             mutation = ''
-            print('mutation         ----------------------  ',p["mutations"])
+            if DEBUG: print('mutation         ----------------------  ',p["mutations"])
             for m in p["mutations"]:
                 if mutation!='':mutation+=", "
                 mutation+="("+m["mutation_name"]+","+m["mutation_grade_name"]+")"
-            print('mutations        ',mutation)
+            if DEBUG: print('mutations        ',mutation)
             parent = Parent(number_of_male=str(p["number_of_male"]),
                             number_of_female=p["number_of_female"],
                             number_of_unknown=p["number_of_unknown"],
@@ -233,12 +231,11 @@ def index(request):
                  'num_visits': num_visits},
     )
 
-
 #___________________________________________________________________________________________
 def rawdataset_catalog(request):
 
-    print('The visualisation request method is:', request.method)
-    print('The visualisation POST data is:     ', request.POST)
+    if DEBUG: print('The visualisation request method is:', request.method)
+    if DEBUG: print('The visualisation POST data is:     ', request.POST)
 
     #TO BE DONE ONCE AT THE BEGINING
     if 'reload_pyrat' in request.POST:
@@ -246,8 +243,8 @@ def rawdataset_catalog(request):
     if 'reload_mutation' in request.POST:
         add_mutations()
     result = RawDataset.objects.values()
-    print(RawDataset.objects)
-    print('-------------------------------------------',result)
+    if DEBUG: print(RawDataset.objects)
+    if DEBUG: print('-------------------------------------------',result)
     list_result = [entry for entry in result] 
     list_uid=[os.path.join(e["data_type"], e["data_name"]) for e in list_result]
 
@@ -287,12 +284,12 @@ def rawdataset_catalog(request):
                 for f in value["data"]["raw_files"]:
                     tot_size+=int(f["size"])
                 rawds = RawDataset(data_type=os.path.split(newkey)[0], data_name=os.path.split(newkey)[-1], data_status="available",
-                                  number_of_files=n_files, total_size=tot_size,files_data={'files':value["data"]["raw_files"]},
+                                  number_of_files=n_files, total_size=tot_size,raw_files={'files':value["data"]["raw_files"]}, other_files={'other_files':value["data"]["other_files"]},
                                   date_added=value["date"])
                 rawds.save()
 
                 expcond = ExperimentalCondition()
-                print(expcond)
+                if DEBUG: print(expcond)
                 expcond.save()
                 expds = ExperimentalDataset(raw_dataset=rawds, experimental_condition=expcond)
                 expds.save()
@@ -329,13 +326,13 @@ def rawdataset_catalog(request):
                 if m.grade.grade not in search_dict['grade']:
                     search_dict['grade'].append(m.grade.grade)
         for a in d.instrumental_condition.all():
-            print('a-------------- ',a)
+            if DEBUG: print('a-------------- ',a)
             if a.instrument_type not in search_dict["instrument_type"]:
                 search_dict["instrument_type"].append(a.instrument_type)
             if a.instrument_name not in search_dict["instrument_name"]:
                 search_dict["instrument_name"].append(a.instrument_name)
 
-    print('------------------------------------------------  search dict  ',search_dict)
+    if DEBUG: print('------------------------------------------------  search dict  ',search_dict)
     model_data = RawDataset.objects.all()
 
     if request.method=="POST":
@@ -346,7 +343,7 @@ def rawdataset_catalog(request):
         search_devstage=request.POST.get('search_devstage')
         if search_devstage != None:
             model_data = model_data.filter(experimentaldataset__experimental_condition__sample__developmental_stage=search_devstage)
-            print(search_devstage)
+
         search_mutation=request.POST.get('search_mutation')
         if search_mutation != None:
             model_data = model_data.filter(experimentaldataset__experimental_condition__sample__mutation__name__name=search_mutation)
@@ -354,6 +351,7 @@ def rawdataset_catalog(request):
         search_grade=request.POST.get('search_grade')
         if search_grade != None:
             model_data = model_data.filter(experimentaldataset__experimental_condition__sample__mutation__grade__grade=search_grade)
+            model_data=model_data.distinct()
 
         search_instrument_type=request.POST.get('search_instrument_type')
         if search_instrument_type != None:
@@ -363,7 +361,7 @@ def rawdataset_catalog(request):
         if search_instrument_name != None:
             model_data = model_data.filter(experimentaldataset__experimental_condition__instrumental_condition__instrument_name=search_instrument_name)
 
-    print('================================',model_data)
+    print('=this one===============================',model_data)
 
     model_values = model_data.values()
     model_list = [entry for entry in model_values] 

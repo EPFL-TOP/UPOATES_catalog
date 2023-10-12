@@ -39,7 +39,8 @@ class RawDataset(models.Model):
     data_status     = models.CharField(max_length=100, choices=DATA_STATUS, default='', help_text='Status of the data on the RCP storage.')
     date_added      = models.DateField(null=True, help_text="Date automatically registered (when pushing the refresh button)")
     date_removed    = models.DateField(null=True, help_text="Date when the rawdataset is removed from RCP")
-    files_data      = models.JSONField(null=True)
+    raw_files       = models.JSONField(null=True)
+    other_files     = models.JSONField(null=True)
     compression     = models.CharField(blank=True, max_length=100, choices=COMPRESSION_TYPE, default='', help_text='Type of compression if any')
     file_format     = models.CharField(blank=True, max_length=100, choices=FILE_FORMAT, default='', help_text='Format of the files')
 
