@@ -287,7 +287,7 @@ def rawdataset_catalog(request):
                 
                 print('===========================================================================================list result ',list_result)
 
-                if n_totsize_raw !=
+                #if n_totsize_raw !=
 
             else:
                 n_files_raw=len(value["data"]["raw_files"])
