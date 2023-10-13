@@ -68,8 +68,6 @@
                 <strong>Read config:</strong> {{an.read_config}}<br>
             {% endif %}
 
-    
-
         </div>
     {% endfor %}
 
@@ -97,16 +95,12 @@
                 <strong>contributor: </strong>{{cont.contributor.all|join:", "}} <br/>
                 <strong>type: </strong>{{cont.type}} <br/>
                 <strong>origin: </strong>{{cont.origin}} <br/>
-                <strong>level: </strong>{{cont.level}} <br/>
                 <strong>description: </strong> {{cont.description}} <br/> 
                 {% if forloop.counter != rawdataset.experimentaldataset.experiment.contribution.all|length %} 
                     <br/>
                 {% endif %}
-
-
             {% endfor %}
             <br/>
-
         </div>
     </div>
 </div>
@@ -123,8 +117,8 @@
 
 
 <div style="margin-left:40px;margin-top:1px">
-    <strong>Number of files:</strong> {{rawdataset.number_of_files}}</br>
-    <strong>Total size:</strong> {{rawdataset.total_size|divide:1000000000  |floatformat:4 }} {{" GB"}}</br>
+    <strong>Number of files:</strong> {{rawdataset.number_of_raw_files}}</br>
+    <strong>Total size:</strong> {{rawdataset.total_raw_size|divide:1000000000  |floatformat:4 }} {{" GB"}}</br>
     <strong>Date added:</strong> {{rawdataset.date_added}}</br>
     <strong>Status:</strong> {{rawdataset.data_status}}</br>
     {% if rawdataset.date_removed %}
@@ -150,6 +144,8 @@
 
 </br></br>
 <div style="margin-left:40px;margin-top:1px">
+    <strong>Number of other files:</strong> {{rawdataset.number_of_other_files}}</br>
+    <strong>Total size:</strong> {{rawdataset.total_other_size|divide:1000000  |floatformat:4 }} {{" MB"}}</br>
     <strong>Other files list</strong>
 </div>
 {% for file in rawdataset.other_files.files   %}

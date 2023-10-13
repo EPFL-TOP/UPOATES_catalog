@@ -284,10 +284,39 @@ def rawdataset_catalog(request):
                     n_totsize_raw+=int(f["size"])
                 for f in value["data"]["other_files"]:
                     n_totsize_other+=int(f["size"])
-                
-                print('===========================================================================================list result ',list_result)
-
-                #if n_totsize_raw !=
+            
+                for r in list_result:
+                    if newkey != os.path.join(r["data_type"], r["data_name"]): continue
+                    if len(value["data"]["raw_files"])!=len(r["raw_files"]["files"]):
+                        nrds = RawDataset.objects.get(id=r["id"])
+                        nrds.raw_files={'files':value["data"]["raw_files"]}
+                        nrds.number_of_raw_files=len(value["data"]["raw_files"])
+                        tot_size_raw=0
+                        for f in value["data"]["raw_files"]:
+                            tot_size_raw+=int(f["size"])
+                        nrds.total_raw_size=tot_size_raw
+                        nrds.save()
+                    
+                    #TEMPORARY
+                    if r["other_files"]==None or r["other_files"]==[]:
+                        nrds = RawDataset.objects.get(id=r["id"])
+                        nrds.other_files={'files':[]}
+                        nrds.save()
+                    if r["total_other_size"]=='':
+                        nrds = RawDataset.objects.get(id=r["id"])
+                        nrds.total_other_size=0
+                        nrds.number_of_other_files=0
+                        nrds.save()
+                    #ENDTEMP
+                    if len(value["data"]["other_files"])!=len(r["other_files"]["files"]):
+                        nrds = RawDataset.objects.get(id=r["id"])
+                        nrds.other_files={'files':value["data"]["other_files"]}
+                        nrds.number_of_other_files=len(value["data"]["other_files"])
+                        tot_size_other=0
+                        for f in value["data"]["other_files"]:
+                            tot_size_other+=int(f["size"])
+                        nrds.total_other_size=tot_size_other
+                        nrds.save()
 
             else:
                 n_files_raw=len(value["data"]["raw_files"])
@@ -316,7 +345,7 @@ def rawdataset_catalog(request):
                 n_newfiles+=n_files
                 n_newsize+=tot_size
     datasetsummary={'n_newdatasets':n_newdatasets, 'n_newfiles':n_newfiles, 'n_newsize':n_newsize/10**9, 
-                     'n_totdatasets':n_totdatasets, 'n_totfiles':n_totfiles, 'n_totsize':n_totsize/10**12}
+                     'n_totdatasets':n_totdatasets, 'n_totfiles':n_totfiles_raw, 'n_totsize':n_totsize_raw/10**12}
 
     search_dict = {
         'specie':[],
@@ -378,7 +407,7 @@ def rawdataset_catalog(request):
         if search_instrument_name != None:
             model_data = model_data.filter(experimentaldataset__experimental_condition__instrumental_condition__instrument_name=search_instrument_name)
 
-    print('=this one===============================',model_data)
+    #print('=this one===============================',model_data)
 
     model_values = model_data.values()
     model_list = [entry for entry in model_values] 
@@ -407,16 +436,16 @@ def rawdataset_catalog(request):
     size_added=[]
 
     for e in model_list:
+
         if e["date_added"] in date_added:
             #continue
-            #print(index(e["date_added"])
-            nfiles_added[date_added.index(e["date_added"])]+=int(e["number_of_files"])
-            size_added[date_added.index(e["date_added"])]+=int(e["total_size"])/10**12
+            nfiles_added[date_added.index(e["date_added"])]+=int(e["number_of_raw_files"])
+            size_added[date_added.index(e["date_added"])]+=int(e["total_raw_size"])/10**12
             ndatasets_added[date_added.index(e["date_added"])]+=1
         else:
             date_added.append(e["date_added"])
-            nfiles_added.append(int(e["number_of_files"]))
-            size_added.append(int(e["total_size"])/10**12)
+            nfiles_added.append(int(e["number_of_raw_files"]))
+            size_added.append(int(e["total_raw_size"])/10**12)
             ndatasets_added.append(1)
 
     nfiles_added=[x for _, x in sorted(zip(date_added, nfiles_added))]
@@ -453,9 +482,9 @@ def rawdataset_catalog(request):
 
     for e in model_list:
         rawdata_dict[e["data_type"]]['datasets'].append(e)
-        rawdata_dict[e["data_type"]]['datasets'][-1]['total_size']=int(rawdata_dict[e["data_type"]]['datasets'][-1]['total_size'])/10**9
-        rawdata_dict[e["data_type"]]['tot_size']=rawdata_dict[e["data_type"]]['tot_size']+e["total_size"]/10**3
-        rawdata_dict[e["data_type"]]['tot_files']=rawdata_dict[e["data_type"]]['tot_files']+int(e["number_of_files"])
+        rawdata_dict[e["data_type"]]['datasets'][-1]['total_raw_size']=int(rawdata_dict[e["data_type"]]['datasets'][-1]['total_raw_size'])/10**9
+        rawdata_dict[e["data_type"]]['tot_size']=rawdata_dict[e["data_type"]]['tot_size']+e["total_raw_size"]/10**3
+        rawdata_dict[e["data_type"]]['tot_files']=rawdata_dict[e["data_type"]]['tot_files']+int(e["number_of_raw_files"])
         rawdata_dict[e["data_type"]]['n_datasets']=rawdata_dict[e["data_type"]]['n_datasets']+1
     for e in model_list:
         newlist = sorted(rawdata_dict[e["data_type"]]['datasets'], key=lambda d: d['data_name'])
