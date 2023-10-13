@@ -308,6 +308,8 @@ def rawdataset_catalog(request):
                         nrds.number_of_other_files=0
                         nrds.save()
                     #ENDTEMP
+                    print('---------------------------------------------------------newkey  ',newkey)
+                    print(len(value["data"]["other_files"]),'===========================',len(r["other_files"]["files"]))
                     if len(value["data"]["other_files"])!=len(r["other_files"]["files"]):
                         nrds = RawDataset.objects.get(id=r["id"])
                         nrds.other_files={'files':value["data"]["other_files"]}
