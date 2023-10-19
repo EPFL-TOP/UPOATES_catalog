@@ -344,8 +344,8 @@ def rawdataset_catalog(request):
 
 
                 n_newdatasets+=1
-                n_newfiles+=n_files
-                n_newsize+=tot_size
+                n_newfiles+=n_files_raw
+                n_newsize+=tot_size_raw
     datasetsummary={'n_newdatasets':n_newdatasets, 'n_newfiles':n_newfiles, 'n_newsize':n_newsize/10**9, 
                      'n_totdatasets':n_totdatasets, 'n_totfiles':n_totfiles_raw, 'n_totsize':n_totsize_raw/10**12}
 
