@@ -96,12 +96,14 @@
                <div style="margin-left:40px;margin-top:1px">
                 <li>
                 {% if rawdata.experimentaldataset.experimental_condition.filled == 'False' %} 
-                <p style="display:inline;color:#FF0000";>Not yet filled</p>
-                                {% endif %}
+                    <p style="display:inline;color:#FF0000";>Not yet filled   </p>
+                {% endif %}
 
                 <a href="{{ rawdata.get_absolute_url }}">
-                        {{ v.data_name }}: {{ v.number_of_files }} files, {{v.total_size  |floatformat:2 }} GB
+                        {{ v.data_name }}
                 </a>
+                &nbsp;&nbsp;&nbsp;&nbsp;raw data: {{ v.number_of_raw_files }} files, {{v.total_raw_size  |floatformat:2 }} GB {% if v.number_of_other_files != "0" %}&nbsp;&nbsp; other data: {{ v.number_of_other_files }} files, {{v.total_other_size  |floatformat:2 }} GB{% endif %}
+      
               </li>
             </div>
 

@@ -253,7 +253,7 @@ def rawdataset_catalog(request):
         metadata_file = open('/Users/helsens/Software/github/EPFL-TOP/UPOATES_catalog/metadatasummary.json')
     elif os.path.isdir('/mnt/nas_rcp/Common/raw_data/metadata/'):
         import glob
-        latestfile=glob.glob('/mnt/nas_rcp/Common/raw_data/metadata/*_latest.json')
+        latestfile=glob.glob('/mnt/nas_rcp/raw_data/metadata/*_latest.json')
         if len(latestfile)!=1:
             print('should not have more than 1 latest file')
             print(latestfile)
