@@ -24,6 +24,7 @@ from requests.auth import HTTPBasicAuth
 
 import accesskeys as accessk
 
+
 # Create your views here.
 DEBUG=False
 #___________________________________________________________________________________________
@@ -231,7 +232,10 @@ def index(request):
                  'num_visits': num_visits},
     )
 
+
+
 #___________________________________________________________________________________________
+@login_required
 def rawdataset_catalog(request):
 
     if DEBUG: print('The visualisation request method is:', request.method)
@@ -242,6 +246,8 @@ def rawdataset_catalog(request):
         fill_parents()
     if 'reload_mutation' in request.POST:
         add_mutations()
+
+
     result = RawDataset.objects.values()
     if DEBUG: print(RawDataset.objects)
     if DEBUG: print('-------------------------------------------',result)
@@ -275,7 +281,7 @@ def rawdataset_catalog(request):
     for data in data_list:
         for key, value in data.items():
             #CLEMENT SPECIFIC TO MY MAC
-            newkey=key.replace("/Volumes/upoates/Common/raw_data/","")
+            newkey=key.replace("/Volumes/upoates/raw_data/","")
             if newkey in list_uid:
                 n_totdatasets+=1
                 n_totfiles_raw+=len(value["data"]["raw_files"])
