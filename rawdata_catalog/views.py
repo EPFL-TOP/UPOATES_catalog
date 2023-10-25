@@ -284,7 +284,7 @@ def rawdataset_catalog(request):
             newkey=''
             if os.path.isdir('/Volumes/upoates/raw_data/'):
                 newkey=key.replace("/Volumes/upoates/raw_data/","")
-            elif os.path.isdir('/mnt/nas_rcp/raw_data/metadata/'):
+            elif os.path.isdir('/mnt/nas_rcp/raw_data/'):
                 newkey=key.replace("/mnt/nas_rcp/raw_data/","")
             if newkey in list_uid:
                 n_totdatasets+=1
@@ -431,7 +431,12 @@ def rawdataset_catalog(request):
     for data in data_list:
         for key, value in data.items():
             #CLEMENT SPECIFIC TO MY MAC
-            newkey=key.replace("/Volumes/upoates/Common/raw_data/","")
+
+            newkey=''
+            if os.path.isdir('/Volumes/upoates/raw_data/'):
+                newkey=key.replace("/Volumes/upoates/raw_data/","")
+            elif os.path.isdir('/mnt/nas_rcp/raw_data/'):
+                newkey=key.replace("/mnt/nas_rcp/raw_data/","")
             if newkey in list_uid2:
                 n_totdatasets_filter+=1
                 n_totfiles_filter+=len(value["data"]["raw_files"])
