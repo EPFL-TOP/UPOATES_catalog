@@ -519,8 +519,8 @@ def rawdataset_catalog(request):
 
     print(size_added)
     ax.set(ylim=(min(size_added) if len(size_added)>0 else 0, max(size_added)) if len(size_added)>0 else 1, xlabel="Date", ylabel="Size (TB)")
-    twin1.set(ylim=(min(nfiles_added), max(nfiles_added)), ylabel="Number of files")
-    twin2.set(ylim=(min(ndatasets_added), max(ndatasets_added)), ylabel="Number of datasets")
+    twin1.set(ylim=(min(nfiles_added) if len(nfiles_added)>0 else 0, max(nfiles_added)) if len(nfiles_added)>0 else 1, ylabel="Number of files")
+    twin2.set(ylim=(min(ndatasets_added) if len(ndatasets_added)>0 else 0, max(ndatasets_added)) if len(ndatasets_added)>0 else 1, ylabel="Number of datasets")
 
     ax.yaxis.label.set_color(p1.get_color())
     twin1.yaxis.label.set_color(p2.get_color())
