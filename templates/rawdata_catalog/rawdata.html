@@ -79,7 +79,7 @@
 <h4>Total Available: </h4>
 <div style="margin-left:20px;margin-top:20px">
     <dl>
-        <dd> {{ datasetsummary.n_totdatasets }} datasets,   {{ datasetsummary.n_totfiles }} files, {{ datasetsummary.n_totsize |floatformat:2  }} TB   </dd>
+        <dd> {{ datasetsummary.n_totdatasets_filter }} datasets,   {{ datasetsummary.n_totfiles_filter }} files, {{ datasetsummary.n_totsize_filter |floatformat:2  }} TB   </dd>
     </dl>
 </div>
 <img src="data:image/png;base64,{{ plottot }}"/>
