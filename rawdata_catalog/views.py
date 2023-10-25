@@ -518,7 +518,7 @@ def rawdataset_catalog(request):
     p3, = twin2.plot(date_added, ndatasets_added, "C0",  marker='.', label="n datasets")
 
     print(size_added)
-    ax.set(ylim=(min(size_added), max(size_added)), xlabel="Date", ylabel="Size (TB)")
+    ax.set(ylim=(min(size_added) if len(size_added)>0 else 0, max(size_added)) if len(size_added)>0 else 1, xlabel="Date", ylabel="Size (TB)")
     twin1.set(ylim=(min(nfiles_added), max(nfiles_added)), ylabel="Number of files")
     twin2.set(ylim=(min(ndatasets_added), max(ndatasets_added)), ylabel="Number of datasets")
 
