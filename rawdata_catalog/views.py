@@ -555,9 +555,9 @@ def rawdataset_catalog(request):
     p2, = twin1.plot(date_added, nfilestot_added, "C0",  marker='.', label="n files", color='tab:green')
     p3, = twin2.plot(date_added, ndatasetstot_added, "C0",  marker='.', label="n datasets")
 
-    ax.set(ylim=(min(sizetot_added), max(sizetot_added)), xlabel="Date", ylabel="Size (TB)")
-    twin1.set(ylim=(min(nfilestot_added), max(nfilestot_added)), ylabel="Number of files")
-    twin2.set(ylim=(min(ndatasetstot_added), max(ndatasetstot_added)), ylabel="Number of datasets")
+    ax.set(ylim=(min(sizetot_added) if len(sizetot_added)>0 else 0, max(sizetot_added)) if len(sizetot_added)>0 else 1, xlabel="Date", ylabel="Size (TB)")
+    twin1.set(ylim=(min(nfilestot_added) if len(nfilestot_added)>0 else 0, max(nfilestot_added)) if len(nfilestot_added)>0 else 1, ylabel="Number of files")
+    twin2.set(ylim=(min(ndatasetstot_added) if len(ndatasetstot_added)>0 else 0, max(ndatasetstot_added))  if len(ndatasetstot_added)>0 else 1, ylabel="Number of datasets")
 
     ax.yaxis.label.set_color(p1.get_color())
     twin1.yaxis.label.set_color(p2.get_color())
