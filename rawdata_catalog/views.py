@@ -165,6 +165,8 @@ def fill_parents():
         response_json = response.json()
         if DEBUG: print(response_json)
 
+        if len(response_json)==0:continue
+
         sample_with_date = Sample.objects.get(pyrat_crossing_id=xid)
         if sample_with_date.date_of_crossing == '' or sample_with_date.date_of_crossing == None:
             sample_with_date.date_of_crossing = response_json[0]['date_of_record']
