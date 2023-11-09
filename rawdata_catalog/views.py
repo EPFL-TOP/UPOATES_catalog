@@ -18,6 +18,7 @@ import urllib, base64
 from rawdata_catalog.models import RawDataset
 from experiment_catalog.models import ExperimentalDataset
 from experimentalcondition_catalog.models import ExperimentalCondition, MutationName, MutationGrade, Parent, Sample
+from analysis_catalog.models import Analysis, AnalysisStep, AnalysisDataset
 
 import requests
 from requests.auth import HTTPBasicAuth
@@ -138,6 +139,7 @@ def fill_parents():
     password = accessk.PYRAT_password
     auth = HTTPBasicAuth(username, password)
     base_url = 'https://sv-pyrat-aquatic-test.epfl.ch/pyrat-aquatic-test/api/v3/'
+    base_url = 'https://sv-pyrat-aquatic.epfl.ch/pyrat-aquatic/api/v3/'
     api_url_tanks     = base_url +'tanks'
     api_url_crossings = base_url + 'tanks/crossings'
     api_url_strains   = base_url + 'strains'
@@ -199,6 +201,10 @@ def fill_parents():
             sample_with_date.save()
 
 #___________________________________________________________________________________________
+def fill_analysis_steps():
+    analyses = Analysis.objects.values()
+
+#___________________________________________________________________________________________
 def index(request):
     """View function for home page of site."""
     # Generate counts of some of the main objects
@@ -243,11 +249,14 @@ def rawdataset_catalog(request):
     if DEBUG: print('The visualisation request method is:', request.method)
     if DEBUG: print('The visualisation POST data is:     ', request.POST)
 
-    #TO BE DONE ONCE AT THE BEGINING
+    if 'reload_analysis' in request.POST:
+        fill_analysis_steps()
     if 'reload_pyrat' in request.POST:
         fill_parents()
+    #TO BE DONE ONCE AT THE BEGINING
     if 'reload_mutation' in request.POST:
         add_mutations()
+
 
 
     result = RawDataset.objects.values()
@@ -284,7 +293,7 @@ def rawdataset_catalog(request):
         for key, value in data.items():
             #CLEMENT SPECIFIC TO MY MAC
             newkey=''
-            if os.path.isdir('/Volumes/upoates/raw_data/'):
+            if os.path.isdir('/Users/helsens/Software/github/EPFL-TOP/UPOATES_catalog/'):
                 newkey=key.replace("/Volumes/upoates/raw_data/","")
             elif os.path.isdir('/mnt/nas_rcp/raw_data/'):
                 newkey=key.replace("/mnt/nas_rcp/raw_data/","")
@@ -396,30 +405,36 @@ def rawdataset_catalog(request):
     model_data = RawDataset.objects.all()
 
     if request.method=="POST":
-        search_specie=request.POST.get('search_specie')
-        if search_specie != None:
-            model_data = model_data.filter(experimentaldataset__experimental_condition__sample__specie=search_specie)
+        search_specie=request.POST.getlist('search_specie')
+        if len(search_specie) > 0:
+            for search in search_specie:
+                model_data = model_data.filter(experimentaldataset__experimental_condition__sample__specie=search)
 
-        search_devstage=request.POST.get('search_devstage')
-        if search_devstage != None:
-            model_data = model_data.filter(experimentaldataset__experimental_condition__sample__developmental_stage=search_devstage)
+        search_devstage=request.POST.getlist('search_devstage')
+        if len(search_devstage) > 0:
+            for search in search_devstage:
+                model_data = model_data.filter(experimentaldataset__experimental_condition__sample__developmental_stage=search)
 
-        search_mutation=request.POST.get('search_mutation')
-        if search_mutation != None:
-            model_data = model_data.filter(experimentaldataset__experimental_condition__sample__mutation__name__name=search_mutation)
+        search_mutation=request.POST.getlist('search_mutation')
+        if len(search_mutation) > 0:
+            for search in search_mutation:
+                model_data = model_data.filter(experimentaldataset__experimental_condition__sample__mutation__name__name=search)
 
-        search_grade=request.POST.get('search_grade')
-        if search_grade != None:
-            model_data = model_data.filter(experimentaldataset__experimental_condition__sample__mutation__grade__grade=search_grade)
+        search_grade=request.POST.getlist('search_grade')
+        if len(search_grade) > 0:
+            for search in search_grade:
+                model_data = model_data.filter(experimentaldataset__experimental_condition__sample__mutation__grade__grade=search)
             model_data=model_data.distinct()
 
-        search_instrument_type=request.POST.get('search_instrument_type')
-        if search_instrument_type != None:
-            model_data = model_data.filter(experimentaldataset__experimental_condition__instrumental_condition__instrument_type=search_instrument_type)
+        search_instrument_type=request.POST.getlist('search_instrument_type')
+        if len(search_instrument_type) > 0:
+            for search in search_instrument_type:
+                model_data = model_data.filter(experimentaldataset__experimental_condition__instrumental_condition__instrument_type=search)
 
-        search_instrument_name=request.POST.get('search_instrument_name')
-        if search_instrument_name != None:
-            model_data = model_data.filter(experimentaldataset__experimental_condition__instrumental_condition__instrument_name=search_instrument_name)
+        search_instrument_name=request.POST.getlist('search_instrument_name')
+        if len(search_instrument_name) > 0:
+            for search in search_instrument_name:
+                model_data = model_data.filter(experimentaldataset__experimental_condition__instrumental_condition__instrument_name=search)
 
     #print('=this one===============================',model_data)
 

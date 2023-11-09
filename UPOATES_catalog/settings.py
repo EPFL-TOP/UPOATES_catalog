@@ -58,8 +58,8 @@ INSTALLED_APPS = [
     'experiment_catalog.apps.ExperimentCatalogConfig',
     'project_catalog.apps.ProjectCatalogConfig',
     'experimentalcondition_catalog.apps.ExperimentalconditionCatalogConfig',
+    'analysis_catalog.apps.AnalysisCatalogConfig',
 
-    
 ]
 
 MIDDLEWARE = [
@@ -158,7 +158,7 @@ USE_TZ = True
 
 
 # Redirect to home URL after login (Default redirects to /accounts/profile/)
-LOGIN_REDIRECT_URL = '/'
+LOGIN_REDIRECT_URL = '/rawdata_catalog'
 
 # Add to test email:
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
@@ -185,3 +185,5 @@ STATIC_URL = '/static/'
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'

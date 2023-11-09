@@ -1,0 +1,25 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+
+<h1>Analysis List</h1>
+
+{% if analysis_list %}
+  <ul>
+
+  {% for analysis in analysis_list %}
+    <li>
+      <a href="{{ analysis.get_absolute_url }}">
+      {{ analysis }}
+      </a>
+    </li>
+  {% endfor %}
+
+ </ul>
+{% else %}
+  <p>There are no analysis available.</p>
+{% endif %}
+        
+        
+        
+{% endblock %}

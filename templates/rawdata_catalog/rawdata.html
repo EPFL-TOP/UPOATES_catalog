@@ -18,51 +18,53 @@
 <!--form type="get" action="." style="margin: 0"-->
 <form method="POST">
     {% csrf_token %}
-    <select id="search_specie" name="search_specie">
-        <option selected disabled>--Select Specie--</option>
+    <select id="search_specie" name="search_specie" multiple>
+        <option selected disabled>Specie&nbsp;</option>
         {% for specie in search_dict.specie %}
             <option value="{{ specie }}">{{ specie }}</option>
         {% endfor %}
     </select>
 
-    <select id="search_devstage" name="search_devstage">
-        <option selected disabled>---Select Dev stage--</option>
+    <select id="search_devstage" name="search_devstage" multiple>
+        <option selected disabled>Dev stage&nbsp;</option>
         {% for dev_stage in search_dict.developmental_stage %}
             <option value="{{ dev_stage }}">{{ dev_stage }}</option>
         {% endfor %}
     </select>
 
-    <select id="search_mutation" name="search_mutation">
-        <option selected disabled>---Select mutation--</option>
+    <select id="search_mutation" name="search_mutation" multiple>
+        <option selected disabled>Mutation&nbsp;</option>
         {% for mut in search_dict.mutation %}
             <option value="{{ mut }}">{{ mut }}</option>
         {% endfor %}
     </select>
 
-    <select id="search_grade" name="search_grade">
-        <option selected disabled>---Select grade--</option>
+    <select id="search_grade" name="search_grade" multiple>
+        <option selected disabled>Grade&nbsp;</option>
         {% for gr in search_dict.grade %}
             <option value="{{ gr }}">{{ gr }}</option>
         {% endfor %}
     </select>
 
-    <select id="search_instrument_type" name="search_instrument_type">
-        <option selected disabled>---Select instrument type--</option>
+    <select id="search_instrument_type" name="search_instrument_type" multiple>
+        <option selected disabled>Inst. type&nbsp;</option>
         {% for inst in search_dict.instrument_type %}
             <option value="{{ inst }}">{{ inst }}</option>
         {% endfor %}
     </select>
 
-    <select id="search_instrument_name" name="search_instrument_name">
-        <option selected disabled>---Select instrument name--</option>
+    <select id="search_instrument_name" name="search_instrument_name" multiple>
+        <option selected disabled>Inst. name&nbsp;</option>
         {% for inst in search_dict.instrument_name %}
             <option value="{{ inst }}">{{ inst }}</option>
         {% endfor %}
     </select>
+    <br><br>
+    <input type="submit" value="Submit">
 
-
-    <button id="search_submit" type="submit" >Submit</button>
 </form>
+<br>
+<p>Hold down the Ctrl (windows) or Command (Mac) button to select multiple options.</p>
 
 
 

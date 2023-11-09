@@ -1,0 +1,72 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+
+<h2><strong>Analysis:</strong> {{ analysis.name }} </h2>
+<hr>
+
+<div style="margin-left:10px;margin-top:20px">
+  <h4>Analysis details</h4>
+</div>
+
+<div style="margin-left:30px;margin-top:10px">
+  <strong>Starting date:</strong> {{ analysis.start_date }}</br>
+  {% if analysis.end_date %}
+  <strong>Ending date:</strong> {{ analysis.end_date }}</br>
+  {% endif %}
+  <strong>Status:</strong> {{ analysis.status }}</br>
+  <strong>Tags:</strong> {{ analysis.analysis_tag.all|join:", "  }}</br>
+  <strong>Description:</strong> {{ analysis.description}}</br>
+  <strong>Project:</strong> <a href="{{ analysis.project.get_absolute_url }}"> {{ analysis.project }}</a></br>
+</div>
+
+<hr>
+<div style="margin-left:10px;margin-top:20px">
+  <h4>Analysis steps</h4>
+
+
+  {% for ana in analysis.analyses.all %}
+  <div style="margin-left:10px;margin-top:0px">
+    <strong>step {{ ana.step_number }}</strong> </br>
+  </div>
+
+  <div style="margin-left:25px;margin-top:0px">
+    <strong>name:</strong> {{ ana.name }}</br>
+    <strong>description:</strong> {{ ana.description }}</br>
+    {% if ana.input_dataset.all %}<strong>input dataset:</strong> {{ ana.input_dataset }}</br>{% endif %}
+    {% for input in ana.input_dataset.all %}
+      {{input.path}}</br>
+    {% endfor %} 
+    {% if ana.output_dataset.all %}<strong>output dataset:</strong> {{ ana.output_dataset }}</br>{% endif %}
+    {% for output in ana.output_dataset.all %}
+      {{output.path}}</br>
+    {% endfor %} 
+  </div>
+{% endfor %} 
+
+
+
+</div>
+
+
+<hr>
+<div style="margin-left:10px;margin-top:20px">
+  <h4>RawDataset/Experiment</h4>
+</div>
+
+<div style="margin-left:20px;margin-top:0px">
+
+{% for rds in analysis.project.dataset.all %}
+<strong>{{forloop.counter}}</strong>  RawDataset: <a href="{{ rds.raw_dataset.get_absolute_url }}"> {{ rds.raw_dataset }}</a>  Experiment: <a href="{{ rds.experiment.get_absolute_url }}"> {{ rds.experiment }}</a><br>
+
+ 
+
+{% endfor %}
+</div>
+
+
+
+
+{% endblock %}
+
+

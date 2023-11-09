@@ -10,30 +10,63 @@
 </div>
 
 <div style="margin-left:30px;margin-top:10px">
-  <strong>Starting date:</strong> {{ project.date }}</br>
+  <strong>Starting date:</strong> {{ project.start_date }}</br>
+  {% if project.end_date %}
+    <strong>Ending date:</strong> {{ project.end_date }}</br>
+  {% endif %}
+
   <strong>Status:</strong> {{ project.status }}</br>
   <strong>Tags:</strong> {{ project.project_tag.all|join:", "  }}</br>
   <strong>Description:</strong> {{ project.description}}</br>
+  {% if project.analysis_project.all %}<strong>Analyses:</strong></br>{% endif %}
+  {% for ana in project.analysis_project.all %}
+    <div style="margin-left:20px;margin-top:0px">
+      <a href="{{ ana.get_absolute_url }}"> {{ ana }}</a></br>
+    </div>
+  {% endfor %}
+</br>
+
+
   {% if project.zenodo.all %}
-  <strong>Zenodo:</strong> {{ project.zenodo.all  }}</br>
+    <strong>Zenodo</strong></br>
+    {% for zeno in project.zenodo.all %}
+      <div style="margin-left:20px;margin-top:0px">
+        {% if zeno.title %}<strong>Title:</strong> {{ zeno.title  }}</br>{% endif %}
+        {% if zeno.doi %}<strong>DOI:</strong> {{ zeno.doi  }}</br>{% endif %}
+      </div>
+   
+    {% endfor %}
   {% endif %}
+</br>
+
   {% if project.publication.all %}
-  <strong>publication:</strong> {{ project.publication.all  }}</br>
+    <strong>Publication</strong></br>
+    {% for pub in project.publication.all %}
+      <div style="margin-left:20px;margin-top:0px">
+        <strong>Name</strong> {{ pub.name_short }}</br>
+        <strong>Bioarxiv ID</strong> {{ pub.bioarxiv_id }}</br>
+        <strong>Bioarxiv title</strong> {{ pub.bioarxiv_title }}</br>
+        {% if pub.journal_id %}<strong>Journal ID:</strong> {{ pub.journal_id }}</br>{% endif %}
+        {% if pub.journal_title %}<strong>Journal title:</strong> {{ pub.journal_title }}</br>{% endif %}
+      </div>
+      {% if forloop.counter != project.publication.all|length %} 
+        <br/>
+      {% endif %}
+    {% endfor %}
   {% endif %}
+</br>
+
   <strong>Contributions:</strong> </br>
   <div style="margin-left:20px;margin-top:0px">
     {% for cont in project.contribution.all %}
         <strong>contributor: </strong>{{cont.contributor.all|join:", "}} <br/>
         <strong>type: </strong>{{cont.type}} <br/>
         <strong>origin: </strong>{{cont.origin}} <br/>
-        <strong>description: </strong> {{cont.description}} <br/> 
-        {% if forloop.counter != experiment.contribution.all|length %} 
-            <br/>
-        {% endif %}
+        {% if cont.description %}<strong>description: </strong> {{cont.description}} <br/> {% endif %}
     {% endfor %}
     <br/>
 </div>
-
+</br>
 
 </div>
 

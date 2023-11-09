@@ -98,7 +98,7 @@ class Mutation(models.Model):
 
     def __str__(self):
         """String for representing the Model object (in Admin site etc.)"""
-        return '({0}, {1})'.format(self.name, self.grade)
+        return '({0}, {1}, {2})'.format(self.id, self.name, self.grade)
     
 #___________________________________________________________________________________________
 class Treatment(models.Model):

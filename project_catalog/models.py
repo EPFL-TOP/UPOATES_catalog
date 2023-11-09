@@ -28,7 +28,7 @@ class ProjectTag(models.Model):
         """String for representing the Model object (in Admin site etc.)"""
         return  self.name
     
-#____, self.name, self.status_______________________________________________________________________________________
+#___________________________________________________________________________________________
 class Zenodo(models.Model):
     """Model representing a publication"""
     title  = models.CharField(max_length=200, help_text="Title for the zenodo entry")
@@ -70,8 +70,9 @@ class Project(models.Model):
         ('finished','Finished'),        #data analysis finished and un-published
         ('terminated', 'Terminated')    #data analysis terminated, and not published will no longer use the data
     )
+
     name         = models.CharField(default="", max_length=200, help_text="Name of the project")
-    date         = models.DateField(null=True, help_text="Date field in format: MM/DD/YYYY")
+    start_date   = models.DateField(null=True, help_text="Start date of the project in format: MM/DD/YYYY")
     status       = models.CharField(max_length=20, choices=PROJ_STATUS, default='Ongoing', help_text='Status of the project')
     dataset      = models.ManyToManyField(ExperimentalDataset, help_text="Choose one or several experiment(s) for this project")
     project_tag  = models.ManyToManyField(ProjectTag, help_text="Select project tag(s) for this project")
@@ -79,6 +80,7 @@ class Project(models.Model):
     publication  = models.ManyToManyField(Publication, blank=True, help_text="Select publication(s) for this project")
     zenodo       = models.ManyToManyField(Zenodo, blank=True, help_text="Select zenodo(s) for this project")
     contribution = models.ManyToManyField(Contribution, blank=True, help_text="Contribution(s) for this project")
+    end_date     = models.DateField(blank=True, null=True, help_text="End date of the project in format: MM/DD/YYYY")
 
     def get_absolute_url(self):
         """Returns the url to access a particular treatment instance."""
@@ -86,8 +88,8 @@ class Project(models.Model):
     
     def __str__(self):
         """String for representing the project object"""
-        return '{0}, {1}, {2}'.format(self.date, self.name, self.status)
+        return '{0}, {1}, {2}'.format(self.start_date, self.name, self.status)
 
     class Meta:
-        ordering = ("date", "name")
+        ordering = ("start_date", "name")
 

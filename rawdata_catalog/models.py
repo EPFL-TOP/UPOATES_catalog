@@ -32,23 +32,19 @@ class RawDataset(models.Model):
         ('fastq','fastq'),
     )
 
-    data_type       = models.CharField(max_length=100, help_text='Type of data for this dataset (reflecting the the RCP storage categories)')
-    data_name       = models.CharField(max_length=100, help_text="Name of the experimental dataset folder on the RCP storage.")
-    number_of_raw_files = models.CharField(max_length=10, help_text='Number of files for this dataset.', default='')
-    total_raw_size      = models.CharField(max_length=100, help_text='Total size for this dataset (in bytes).', default='')
+    data_type             = models.CharField(max_length=100, help_text='Type of data for this dataset (reflecting the the RCP storage categories)')
+    data_name             = models.CharField(max_length=100, help_text="Name of the experimental dataset folder on the RCP storage.")
+    number_of_raw_files   = models.CharField(max_length=10, help_text='Number of files for this dataset.', default='')
+    total_raw_size        = models.CharField(max_length=100, help_text='Total size for this dataset (in bytes).', default='')
     number_of_other_files = models.CharField(max_length=10, help_text='Number of files for this dataset.', default='')
     total_other_size      = models.CharField(max_length=100, help_text='Total size for this dataset (in bytes).', default='')
-    data_status     = models.CharField(max_length=100, choices=DATA_STATUS, default='', help_text='Status of the data on the RCP storage.')
-    date_added      = models.DateField(null=True, help_text="Date automatically registered (when pushing the refresh button)")
-    date_removed    = models.DateField(blank=True, null=True, help_text="Date when the rawdataset is removed from RCP")
-    raw_files       = models.JSONField(null=True)
-    other_files     = models.JSONField(null=True)
-    compression     = models.CharField(blank=True, max_length=100, choices=COMPRESSION_TYPE, default='', help_text='Type of compression if any')
-    file_format     = models.CharField(blank=True, max_length=100, choices=FILE_FORMAT, default='', help_text='Format of the files')
-
-    #experimental_sample = models.ManyToManyField(ExperimentalSample, blank=True,help_text="Select experimental samples for this experimental dataset", default='', null=True)
-
-
+    data_status           = models.CharField(max_length=100, choices=DATA_STATUS, default='', help_text='Status of the data on the RCP storage.')
+    date_added            = models.DateField(null=True, help_text="Date automatically registered (when pushing the refresh button)")
+    date_removed          = models.DateField(blank=True, null=True, help_text="Date when the rawdataset is removed from RCP")
+    raw_files             = models.JSONField(null=True)
+    other_files           = models.JSONField(null=True)
+    compression           = models.CharField(blank=True, max_length=100, choices=COMPRESSION_TYPE, default='', help_text='Type of compression if any')
+    file_format           = models.CharField(blank=True, max_length=100, choices=FILE_FORMAT, default='', help_text='Format of the files')
 
     def get_absolute_url(self):
         """Returns the url to access a particular contributor instance."""
@@ -58,7 +54,6 @@ class RawDataset(models.Model):
         """String for representing the RawDataset object."""
         #return ''
         return '{0}, {1}, {2}, {3}, {4}'.format(self.data_type, self.data_name, self.data_status, self.number_of_raw_files, self.total_raw_size)
-
 
     class Meta:
         ordering = ('data_type','data_name',)

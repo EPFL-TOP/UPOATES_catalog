@@ -31,6 +31,8 @@ urlpatterns += [
     path('contribution_catalog/', include('contribution_catalog.urls')),
     path('project_catalog/', include('project_catalog.urls')),
     path('experimentalcondition_catalog/', include('experimentalcondition_catalog.urls')),
+    path('analysis_catalog/', include('analysis_catalog.urls')),
+
 ]
 
 
