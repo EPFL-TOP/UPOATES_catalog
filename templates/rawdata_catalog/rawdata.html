@@ -100,7 +100,8 @@ ul { margin-bottom: 0; }
         {% for v in value.datasets %}
             {% for rawdata in model_data %}         
                 {% if v.data_name == rawdata.data_name and key == rawdata.data_type  %}
-               <div style="margin-left:40px;margin-top:1px">
+               <div style="margin-left:20px;margin-top:1px">
+                <ul>
                 <li>
                 {% if rawdata.experimentaldataset.experimental_condition.filled == 'False' %} 
                     <p style="display:inline;color:#FF0000";>Not yet filled   </p>
@@ -112,7 +113,7 @@ ul { margin-bottom: 0; }
                 &nbsp;&nbsp;&nbsp;&nbsp;raw data: {{ v.number_of_raw_files }} files, {{v.total_raw_size  |floatformat:2 }} GB {% if v.number_of_other_files != "0" %}&nbsp;&nbsp; other data: {{ v.number_of_other_files }} files, {{v.total_other_size  |floatformat:2 }} GB{% endif %}
                 
                 {% if rawdata.experimentaldataset.experiment %}
-                    <div style="margin-left:20px;margin-top:1px">
+                    <div style="margin-left:15px;margin-top:1px">
                         <ul>
                             <li>
                                 Experiment: 
@@ -125,7 +126,7 @@ ul { margin-bottom: 0; }
                 {% endif %}
 
                 {% if rawdata.experimentaldataset.project_dataset.all %}
-                    <div style="margin-left:20px;margin-top:1px">
+                    <div style="margin-left:15px;margin-top:1px">
                         <ul>
                             <li>
                                 Project(s): 
@@ -144,7 +145,7 @@ ul { margin-bottom: 0; }
 
                 {% for proj in rawdata.experimentaldataset.project_dataset.all %}
                 {% if proj.analysis_project.all %}
-                    <div style="margin-left:20px;margin-top:1px">
+                    <div style="margin-left:15px;margin-top:1px">
                         <ul>
                             <li>
                                 Analysis(es): 
@@ -161,10 +162,9 @@ ul { margin-bottom: 0; }
                     </div>
                 {% endif %}
                 {% endfor %}
-
-
               </li>
             </div>
+        </ul>
 
                 {% endif %}
             {% endfor %}
