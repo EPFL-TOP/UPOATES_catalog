@@ -82,7 +82,7 @@ class Contributor(models.Model):
         #if len(self.origin.values())>0: origin = self.origin.values()[0]["origin"]
         #for x in range(1,len(self.origin.values())): origin+=', '+self.origin.values()[x]["origin"]
 
-        return '{0}, {1}, {2} ({3})'.format(self.id, self.person, self.email_address, affiliations)
+        return '{0}, {1}, ({2})'.format(self.person, self.email_address, affiliations)
 
     class Meta:
         ordering = ("-id", )
