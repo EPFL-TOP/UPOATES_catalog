@@ -1,6 +1,11 @@
 {% extends "base_generic.html" %}
 {% load rawdata_catalog_extras %}
 {% block content %}
+<style>
+ul { margin-top: 0; }
+ul { margin-bottom: 0; }
+</style>
+
 <h1>Raw dataset list</h1>
 
 
@@ -105,7 +110,59 @@
                         {{ v.data_name }}
                 </a>
                 &nbsp;&nbsp;&nbsp;&nbsp;raw data: {{ v.number_of_raw_files }} files, {{v.total_raw_size  |floatformat:2 }} GB {% if v.number_of_other_files != "0" %}&nbsp;&nbsp; other data: {{ v.number_of_other_files }} files, {{v.total_other_size  |floatformat:2 }} GB{% endif %}
-      
+                
+                {% if rawdata.experimentaldataset.experiment %}
+                    <div style="margin-left:20px;margin-top:1px">
+                        <ul>
+                            <li>
+                                Experiment: 
+                                <a href="{{ rawdata.experimentaldataset.experiment.get_absolute_url }}"> 
+                                {{ rawdata.experimentaldataset.experiment.experiment_name}} 
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                {% endif %}
+
+                {% if rawdata.experimentaldataset.project_dataset.all %}
+                    <div style="margin-left:20px;margin-top:1px">
+                        <ul>
+                            <li>
+                                Project(s): 
+                                {% for proj in rawdata.experimentaldataset.project_dataset.all %}
+                                    {% if rawdata.experimentaldataset.project_dataset.all|length == 1 %}<a href="{{ proj.get_absolute_url }}">{{ proj.name }}</a> {% endif %}
+                                    {% if rawdata.experimentaldataset.project_dataset.all|length > 1 %}
+                                        {% if forloop.counter == 1 %} <a href="{{ proj.get_absolute_url }}">{{ proj.name }}</a> {% endif %}
+                                        {% if forloop.counter > 1 %} ; <a href="{{ proj.get_absolute_url }}">{{ proj.name }}</a>{% endif %}
+                                    {% endif %}
+                                {% endfor %}
+                            </li>
+                        </ul>
+                    </div>
+                {% endif %}
+
+
+                {% for proj in rawdata.experimentaldataset.project_dataset.all %}
+                {% if proj.analysis_project.all %}
+                    <div style="margin-left:20px;margin-top:1px">
+                        <ul>
+                            <li>
+                                Analysis(es): 
+                                {% for ana in proj.analysis_project.all %}
+                                     
+                                        {% if proj.analysis_project.all|length == 1 %}<a href="{{ ana.get_absolute_url }}">{{ ana.name }}</a> {% endif %}
+                                        {% if proj.analysis_project.all|length > 1 %}
+                                        {% if forloop.counter == 1 %} <a href="{{ ana.get_absolute_url }}">{{ ana.name }}</a> {% endif %}
+                                        {% if forloop.counter > 1 %} ; <a href="{{ ana.get_absolute_url }}">{{ ana.name }}</a>{% endif %}
+                                        {% endif %}
+                                {% endfor %}
+                            </li>
+                        </ul>
+                    </div>
+                {% endif %}
+                {% endfor %}
+
+
               </li>
             </div>
 

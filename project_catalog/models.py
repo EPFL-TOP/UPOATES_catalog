@@ -74,7 +74,7 @@ class Project(models.Model):
     name         = models.CharField(default="", max_length=200, help_text="Name of the project")
     start_date   = models.DateField(null=True, help_text="Start date of the project in format: MM/DD/YYYY")
     status       = models.CharField(max_length=20, choices=PROJ_STATUS, default='Ongoing', help_text='Status of the project')
-    dataset      = models.ManyToManyField(ExperimentalDataset, help_text="Choose one or several experiment(s) for this project")
+    dataset      = models.ManyToManyField(ExperimentalDataset, help_text="Choose one or several experiment(s) for this project", related_name="project_dataset")
     project_tag  = models.ManyToManyField(ProjectTag, help_text="Select project tag(s) for this project")
     description  = models.TextField(blank=True, max_length=2000, help_text="Enter a brief description of the project")
     publication  = models.ManyToManyField(Publication, blank=True, help_text="Select publication(s) for this project")
