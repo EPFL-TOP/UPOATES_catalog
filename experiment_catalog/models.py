@@ -50,10 +50,17 @@ class Experiment(models.Model):
 class ExperimentalDataset(models.Model):
     """Model representing the experimental dataset of a given raw-dataset."""  
 
+    QUALITY = (
+
+        ('High', 'High'),
+        ('Medium', 'Medium'),
+        ('Low', 'Low')
+    )
+
     raw_dataset            = models.OneToOneField(RawDataset, on_delete=models.CASCADE, primary_key=True, help_text="Raw dataset for this experimental dataset.")
     experimental_condition = models.OneToOneField(ExperimentalCondition, on_delete=models.CASCADE, null=True, blank=True,   default='', help_text="Raw dataset for this experimental dataset.")
     experiment             = models.ForeignKey(Experiment, null=True, blank=True, on_delete=models.DO_NOTHING, default="")
-
+    dataset_quality        = models.CharField(max_length=100, choices=QUALITY, default='', help_text='Dataset quality flag')
     def get_absolute_url(self):
         """Returns the url to access a particular Experiment instance."""
         return reverse('experimentaldataset-detail', args=[str(self.id)])
