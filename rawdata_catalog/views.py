@@ -367,8 +367,8 @@ def rawdataset_catalog(request):
                 n_newdatasets+=1
                 n_newfiles+=n_files_raw
                 n_newsize+=tot_size_raw
-    datasetsummary={'n_newdatasets':n_newdatasets, 'n_newfiles':n_newfiles, 'n_newsize':n_newsize/10**9, 
-                     'n_totdatasets':n_totdatasets, 'n_totfiles':n_totfiles_raw, 'n_totsize':n_totsize_raw/10**12}
+    datasetsummary={'n_newdatasets':n_newdatasets, 'n_newfiles':n_newfiles, 'n_newsize':n_newsize, #/10**9, 
+                     'n_totdatasets':n_totdatasets, 'n_totfiles':n_totfiles_raw, 'n_totsize':n_totsize_raw} #/10**12}
 
     search_dict = {
         'specie':[],
@@ -462,7 +462,7 @@ def rawdataset_catalog(request):
 
     datasetsummary['n_totdatasets_filter']=n_totdatasets_filter
     datasetsummary['n_totfiles_filter']=n_totfiles_filter
-    datasetsummary['n_totsize_filter']=n_totsize_filter/10**12
+    datasetsummary['n_totsize_filter']=n_totsize_filter #/10**12
     
     date_added=[]
     nfiles_added=[]
@@ -474,12 +474,12 @@ def rawdataset_catalog(request):
         if e["date_added"] in date_added:
             #continue
             nfiles_added[date_added.index(e["date_added"])]+=int(e["number_of_raw_files"])
-            size_added[date_added.index(e["date_added"])]+=int(e["total_raw_size"])/10**12
+            size_added[date_added.index(e["date_added"])]+=int(e["total_raw_size"]) #/10**12
             ndatasets_added[date_added.index(e["date_added"])]+=1
         else:
             date_added.append(e["date_added"])
             nfiles_added.append(int(e["number_of_raw_files"]))
-            size_added.append(int(e["total_raw_size"])/10**12)
+            size_added.append(int(e["total_raw_size"])) #/10**12)
             ndatasets_added.append(1)
 
     nfiles_added=[x for _, x in sorted(zip(date_added, nfiles_added))]
@@ -516,8 +516,8 @@ def rawdataset_catalog(request):
 
     for e in model_list:
         rawdata_dict[e["data_type"]]['datasets'].append(e)
-        rawdata_dict[e["data_type"]]['datasets'][-1]['total_raw_size']=int(rawdata_dict[e["data_type"]]['datasets'][-1]['total_raw_size'])/10**9
-        rawdata_dict[e["data_type"]]['tot_size']=rawdata_dict[e["data_type"]]['tot_size']+e["total_raw_size"]/10**3
+        rawdata_dict[e["data_type"]]['datasets'][-1]['total_raw_size']=int(rawdata_dict[e["data_type"]]['datasets'][-1]['total_raw_size']) #/10**9
+        rawdata_dict[e["data_type"]]['tot_size']=rawdata_dict[e["data_type"]]['tot_size']+e["total_raw_size"] #/10**3
         rawdata_dict[e["data_type"]]['tot_files']=rawdata_dict[e["data_type"]]['tot_files']+int(e["number_of_raw_files"])
         rawdata_dict[e["data_type"]]['n_datasets']=rawdata_dict[e["data_type"]]['n_datasets']+1
     for e in model_list:

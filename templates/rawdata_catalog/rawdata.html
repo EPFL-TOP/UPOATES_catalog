@@ -73,11 +73,10 @@ ul { margin-bottom: 0; }
 
 
 
-
 <h4>Added by last refresh: </h4> 
 <div style="margin-left:20px;margin-top:20px">
     <dl>
-        <dd> {{ datasetsummary.n_newdatasets }} new datasets, {{ datasetsummary.n_newfiles }} new files, {{ datasetsummary.n_newsize |floatformat:2  }} new GB </dd>
+        <dd> {{ datasetsummary.n_newdatasets }} datasets, {{ datasetsummary.n_newfiles }} files, {{ datasetsummary.n_newsize |filesizeformat  }}  </dd>
     </dl>
 </div>
 <img src="data:image/png;base64,{{ plot }}"/>
@@ -86,17 +85,17 @@ ul { margin-bottom: 0; }
 <h4>Total Available: </h4>
 <div style="margin-left:20px;margin-top:20px">
     <dl>
-        <dd> {{ datasetsummary.n_totdatasets_filter }} datasets,   {{ datasetsummary.n_totfiles_filter }} files, {{ datasetsummary.n_totsize_filter |floatformat:2  }} TB   </dd>
+        <dd> {{ datasetsummary.n_totdatasets_filter }} datasets, {{ datasetsummary.n_totfiles_filter }} files, {{ datasetsummary.n_totsize_filter |filesizeformat  }}   </dd>
     </dl>
 </div>
 <img src="data:image/png;base64,{{ plottot }}"/>
 </br>
 
-<h4>Raw datasets list: {{ datasetsummary.n_totdatasets_filter }} datasets,   {{ datasetsummary.n_totfiles_filter }} files, {{ datasetsummary.n_totsize_filter |floatformat:2 }} TB </h4>
+<h4>Raw datasets list: {{ datasetsummary.n_totdatasets_filter }} datasets,   {{ datasetsummary.n_totfiles_filter }} files, {{ datasetsummary.n_totsize_filter |filesizeformat }}  </h4>
 <div style="margin-left:20px;margin-top:20px">
 
     {% for key, value in rawdata_dict.items %}
-    <h5>{{ key }}: {{value.n_datasets }} datasets, {{value.tot_files }} files,  {{value.tot_size |floatformat:4 }} TB</h5>
+    <h5>{{ key }}: {{value.n_datasets }} datasets, {{value.tot_files }} files,  {{value.tot_size | filesizeformat}}</h5>
         {% for v in value.datasets %}
             {% for rawdata in model_data %}         
                 {% if v.data_name == rawdata.data_name and key == rawdata.data_type  %}
@@ -110,7 +109,7 @@ ul { margin-bottom: 0; }
                 <a href="{{ rawdata.get_absolute_url }}">
                         {{ v.data_name }}
                 </a>
-                &nbsp;&nbsp;&nbsp;&nbsp;raw data: {{ v.number_of_raw_files }} files, {{v.total_raw_size  |floatformat:2 }} GB {% if v.number_of_other_files != "0" %}&nbsp;&nbsp; other data: {{ v.number_of_other_files }} files, {{v.total_other_size  |floatformat:2 }} GB{% endif %}
+                &nbsp;&nbsp;&nbsp;&nbsp;raw data: {{ v.number_of_raw_files }} files, {{v.total_raw_size  | filesizeformat }}  {% if v.number_of_other_files != "0" %}&nbsp;&nbsp; other data: {{ v.number_of_other_files }} files, {{v.total_other_size  | filesizeformat }}{% endif %}
                 
                 {% if rawdata.experimentaldataset.experiment %}
                     <div style="margin-left:15px;margin-top:1px">

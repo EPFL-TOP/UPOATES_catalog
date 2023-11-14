@@ -118,7 +118,7 @@
 
 <div style="margin-left:40px;margin-top:1px">
     <strong>Number of files:</strong> {{rawdataset.number_of_raw_files}}</br>
-    <strong>Total size:</strong> {{rawdataset.total_raw_size|divide:1000000000  |floatformat:4 }} {{" GB"}}</br>
+    <strong>Total size:</strong> {{rawdataset.total_raw_size|filesizeformat }}</br>
     <strong>Date added:</strong> {{rawdataset.date_added}}</br>
     <strong>Status:</strong> {{rawdataset.data_status}}</br>
     {% if rawdataset.date_removed %}
@@ -138,19 +138,19 @@
 
 {% for file in rawdataset.raw_files.files   %}
     <div style="margin-left:60px;margin-top:0px">
-        <strong>{{ forloop.counter }}{{": "}}</strong>{{file.name}} {{", "}} {{file.size|divide:1000000000  |floatformat:4 }} {{" GB"}}</br>
+        <strong>{{ forloop.counter }}{{": "}}</strong>{{file.name}} {{", "}} {{file.size|filesizeformat }} </br>
     </div>
 {% endfor %}
 
 </br></br>
 <div style="margin-left:40px;margin-top:1px">
     <strong>Number of other files:</strong> {{rawdataset.number_of_other_files}}</br>
-    <strong>Total size:</strong> {{rawdataset.total_other_size|divide:1000000  |floatformat:4 }} {{" MB"}}</br>
+    <strong>Total size:</strong> {{rawdataset.total_other_size|filesizeformat}}</br>
     <strong>Other files list</strong>
 </div>
 {% for file in rawdataset.other_files.files   %}
     <div style="margin-left:60px;margin-top:0px">
-        <strong>{{ forloop.counter }}{{": "}}</strong>{{file.name}} {{", "}} {{file.size|divide:1000000  |floatformat:4 }} {{" MB"}}</br>
+        <strong>{{ forloop.counter }}{{": "}}</strong>{{file.name}} {{", "}} {{file.size|filesizeformat}}</br>
     </div>
 {% endfor %}
 
