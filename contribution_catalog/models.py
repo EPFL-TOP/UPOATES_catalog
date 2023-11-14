@@ -82,9 +82,10 @@ class Contributor(models.Model):
         #if len(self.origin.values())>0: origin = self.origin.values()[0]["origin"]
         #for x in range(1,len(self.origin.values())): origin+=', '+self.origin.values()[x]["origin"]
 
-        return '{0}, {1}, ({2})'.format(self.person, self.email_address, affiliations)
+        return '{0}, {1}, {2} ({3})'.format(self.id, self.person, self.email_address, affiliations)
 
-
+    class Meta:
+        ordering = ("-id", )
 
 #___________________________________________________________________________________________
 #class ContributionOrigin(models.Model):
@@ -147,4 +148,7 @@ class Contribution(models.Model):
 
 
         #return '{0}, {1}, {2}, {3}'.format(contributor, self.level, self.type, self.origin)
-        return '{0}, {1}, {2}'.format(contributor, self.type, self.origin)
+        return '{0}, {1}, {2}, {3}'.format(self.id, contributor, self.type, self.origin)
+
+    class Meta:
+        ordering = ("-id", )
