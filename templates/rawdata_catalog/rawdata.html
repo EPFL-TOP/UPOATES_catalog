@@ -107,9 +107,10 @@ ul { margin-bottom: 0; }
                 {% endif %}
 
                 <a href="{{ rawdata.get_absolute_url }}">
-                        {{ v.data_name }}
+                        {{ v.data_name }} 
                 </a>
-                &nbsp;&nbsp;&nbsp;&nbsp;raw data: {{ v.number_of_raw_files }} files, {{v.total_raw_size  | filesizeformat }}  {% if v.number_of_other_files != "0" %}&nbsp;&nbsp; other data: {{ v.number_of_other_files }} files, {{v.total_other_size  | filesizeformat }}{% endif %}
+                
+                &nbsp;&nbsp;&nbsp;&nbsp;raw data: {{ v.number_of_raw_files }} files, {{v.total_raw_size  | filesizeformat }} quality: {{rawdata.experimentaldataset.dataset_quality}} {% if v.number_of_other_files != "0" %}&nbsp;&nbsp; other data: {{ v.number_of_other_files }} files, {{v.total_other_size  | filesizeformat }} {% endif %}
                 
                 {% if rawdata.experimentaldataset.experiment %}
                     <div style="margin-left:15px;margin-top:1px">
