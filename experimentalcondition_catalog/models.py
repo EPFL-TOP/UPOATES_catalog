@@ -57,7 +57,7 @@ class Parent(models.Model):
     date_of_birth      = models.DateField(null=True, help_text="Parents date of birth")
     age_at_crossing    = models.CharField(max_length=5, default='', help_text="Age at crossing in days")
     pyrat_crossing_id  = models.CharField(max_length=10, default='', help_text='Pyrat crossing id')
-    mutation_grade     = models.CharField(max_length=100, default='', help_text='Parents mutation(s)')
+    mutation_grade     = models.CharField(blank=True, max_length=100, default='', help_text='Parents mutation(s)')
 
     def __str__(self):
         """String for representing the Model object (in Admin site etc.)"""
@@ -233,6 +233,7 @@ class InstrumentalCondition(models.Model):
         ('21/90 (BRB-Seq dual index)', '21/90 (BRB-Seq dual index)'),
         ('28/90 (10XG 3\'GE v3)', '28/90 (10XG 3\'GE v3)'),
         ('26/90 (10XG 5\'GE v2)', '26/90 (10XG 5\'GE v2)'),
+        ('90/90 (10XG ATAC)', '90/90 (10XG ATAC)'),
     )
 
 
