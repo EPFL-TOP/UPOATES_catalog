@@ -119,6 +119,9 @@ class Contribution(models.Model):
 
     CONTRIB_ORIGIN = (
         ('EPFL-UPOATES','EPFL-UPOATES'),
+        ('EPFL-External','EPFL-External'),
+        ('External','External'),
+
     )
 
     #contributor   = models.OneToOneField(Contributor, default='',  on_delete=models.CASCADE, help_text="Raw dataset for this experimental dataset.")
