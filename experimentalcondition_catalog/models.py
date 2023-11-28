@@ -146,7 +146,8 @@ class Injection(models.Model):
     name                = models.CharField(default='', max_length=200, help_text="Injection name")
     type                = models.CharField(default='',max_length=200, help_text="Treatment type", choices=INJC_TYPE)
     developmental_stage = models.CharField(max_length=100, choices=DEV_STAGE, default='', help_text='Developmental stage')
-    concentration       = models.CharField(blank=True, max_length=20,  default='', help_text='Injection concentration')
+    concentration       = models.CharField(blank=True, max_length=50,  default='', help_text='Injection concentration')
+    volume              = models.CharField(blank=True, max_length=50,  default='', help_text='Injection volume')
     slim_id             = models.CharField(blank=True, max_length=10, help_text="SLIMs ID")
     description         = models.TextField(blank=True, max_length=2000, help_text="Enter a brief description of the injection")
 
