@@ -242,6 +242,7 @@ class InstrumentalCondition(models.Model):
     instrument_name  = models.CharField(max_length=100, choices=INSTRUMENT_NAME, default='', help_text='Name of instrument')
     laser_intensity  = models.CharField(blank=True, max_length=100, default='', help_text='Laser intensity')
     laser_wavelength = models.CharField(blank=True, max_length=100, default='', help_text='Laser wave length')
+    laser_exposure   = models.CharField(blank=True, max_length=100, default='', help_text='Laser exposure, milli-seconds')
     temperature      = models.CharField(blank=True, max_length=100,  default='', help_text='Instrument temperature')
 
     total_read  = models.CharField(blank=True,max_length=100, choices=TOTAL_READ, default='', help_text='Total number of reads')
