@@ -235,6 +235,7 @@ class InstrumentalCondition(models.Model):
         ('28/90 (10XG 3\'GE v3)', '28/90 (10XG 3\'GE v3)'),
         ('26/90 (10XG 5\'GE v2)', '26/90 (10XG 5\'GE v2)'),
         ('90/90 (10XG ATAC)', '90/90 (10XG ATAC)'),
+        ('90/90 (10XG RNA)', '90/90 (10XG RNA)'),
     )
 
 
