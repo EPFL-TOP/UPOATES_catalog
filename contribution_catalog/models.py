@@ -151,7 +151,7 @@ class Contribution(models.Model):
 
 
         #return '{0}, {1}, {2}, {3}'.format(contributor, self.level, self.type, self.origin)
-        return '{0}, {1}, {2}, {3}'.format(self.id, contributor, self.type, self.origin)
+        return '{0}, {1}, {2}, {3}'.format(self.id, contributor, self.type, self.origin, self.description)
 
     class Meta:
         ordering = ("-id", )
