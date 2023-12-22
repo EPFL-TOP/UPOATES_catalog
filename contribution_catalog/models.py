@@ -154,4 +154,4 @@ class Contribution(models.Model):
         return '{0}, {1}, {2}, {3}, {4}'.format(self.id, contributor, self.type, self.origin, self.description)
 
     class Meta:
-        ordering = ("-id", )
+        ordering = ("contributor__person__first_name", )
