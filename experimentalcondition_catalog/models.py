@@ -246,9 +246,11 @@ class InstrumentalCondition(models.Model):
     laser_wavelength = models.CharField(blank=True, max_length=100, default='', help_text='Laser wave length')
     laser_exposure   = models.CharField(blank=True, max_length=100, default='', help_text='Laser exposure, milli-seconds')
     temperature      = models.CharField(blank=True, max_length=100,  default='', help_text='Instrument temperature')
+    comments         = models.TextField(blank=True, max_length=2000,  default='', help_text="Enter comments if any")
 
-    total_read  = models.CharField(blank=True,max_length=100, choices=TOTAL_READ, default='', help_text='Total number of reads')
-    read_config  = models.CharField(blank=True,max_length=100, choices=READ_CONFIG, default='', help_text='Read configuration')
+
+    total_read       = models.CharField(blank=True,max_length=100, choices=TOTAL_READ, default='', help_text='Total number of reads')
+    read_config      = models.CharField(blank=True,max_length=100, choices=READ_CONFIG, default='', help_text='Read configuration')
 
     def __str__(self):
         """String for representing the Model object (in Admin site etc.)"""
@@ -285,6 +287,7 @@ class ExperimentalCondition(models.Model):
     injection  = models.ManyToManyField(Injection, blank=True, help_text="Injection(s) for this experimental condition.")
     date       = models.DateField(blank=True, null=True, help_text="Date of the experiment")
     filled     = models.CharField(max_length=10, choices=BOOL_STATUS, default='False', help_text='Set to True when all experimental conditions are properly filled')
+    comments   = models.TextField(blank=True, max_length=2000,  default='', help_text="Enter comments if any")
 
 
     def __str__(self):
