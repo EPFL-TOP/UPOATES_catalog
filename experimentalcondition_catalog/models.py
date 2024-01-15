@@ -34,6 +34,7 @@ DEV_STAGE = (
     ('6-somites (12h)',    '6-somites (12h)'),
     ('10-somites (14h)',   '10-somites (14h)'),
     ('14-somites (16h)',   '14-somites (16h)'),
+    ('15-somites (17h)',   '15-somites (17h)'),
     ('16-somites (18h)',   '16-somites (18h)'),
     ('21-somites (19.5h)', '21-somites (19.5h)'),
     ('26-somites (22h)',   '26-somites (22h)'),
