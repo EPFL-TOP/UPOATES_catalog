@@ -104,6 +104,7 @@ class Mutation(models.Model):
 #___________________________________________________________________________________________
 class Treatment(models.Model):
     TREAT_TYPE = (
+        ('Biological','Biological'),
         ('Chemical','Chemical'),
         ('HeatShock','HeatShock'),
         ('Mechanical','Mechanical'),
