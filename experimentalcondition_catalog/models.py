@@ -206,6 +206,7 @@ class InstrumentalCondition(models.Model):
         ('viventis2',    'viventis2'),
         ('nikon',    'nikon'),
         ('zeiss',    'zeiss'),
+        ('incucyte','incucyte'),
         ('MiSeq',    'MiSeq'),
         ('VAST', 'VAST'),
         ('NextSeq500',    'NextSeq500'),
