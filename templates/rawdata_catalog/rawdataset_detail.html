@@ -31,14 +31,30 @@
 
             {% endfor %}
             <br/>
-
+            </div>
         </div>
-
-                </div>
     {% endfor %}
 </div>
 {% endif %}
 
+{% if rawdataset.experimentaldataset.experimental_condition.treatment.all %}
+<hr>
+<div style="margin-left:20px;margin-top:20px">
+    <h4>Treatments</h4>
+    {% for tr in rawdataset.experimentaldataset.experimental_condition.treatment.all %}
+        <div style="margin-left:20px;margin-top:10px">
+            {% if tr.name %}<strong>Name:</strong> {{tr.name}}<br>{% endif %}
+
+        </div>
+    {% endfor %}
+</div>
+
+{% endif %}
+
+{% if rawdataset.experimentaldataset.experimental_condition.injection.all %}
+<hr>
+
+{% endif %}
 
 {% if rawdataset.experimentaldataset.experimental_condition.instrumental_condition.all %}
 <hr>
