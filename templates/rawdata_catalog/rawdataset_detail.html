@@ -52,8 +52,7 @@
             {% if tr.temperature %}<strong>Temperature:</strong> {{tr.temperature}}<br>{% endif %}
             {% if tr.description %}<strong>Description:</strong> {{tr.description}}<br>{% endif %}
         </div>
-        <hr style="width: 100px;margin-left: 0;">
-        {{forloop.counter}} {{ rawdataset.experimentaldataset.experimental_condition.treatment.all.count }}
+        {% if forloop.counter!=rawdataset.experimentaldataset.experimental_condition.treatment.all.count}<hr style="width: 100px;margin-left: 0;">{% endif %}
     {% endfor %}
 </div>
 
@@ -72,7 +71,7 @@
             {% if in.slim_id %}<strong>Slim ID:</strong> {{in.slim_id}}<br>{% endif %}
             {% if in.description %}<strong>Description:</strong> {{in.description}}<br>{% endif %}
         </div>
-        <hr style="width: 100px;margin-left: 0;">
+        {% if forloop.counter!=rawdataset.experimentaldataset.experimental_condition.injection.all.count}<hr style="width: 100px;margin-left: 0;">{% endif %}
     {% endfor %}
 </div>
 
