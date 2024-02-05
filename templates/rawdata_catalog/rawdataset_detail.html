@@ -44,8 +44,8 @@
     {% for tr in rawdataset.experimentaldataset.experimental_condition.treatment.all %}
         <div style="margin-left:20px;margin-top:10px">
             {% if tr.name %}<strong>Name:</strong> {{tr.name}}<br>{% endif %}
-
         </div>
+        <hr style="width: 100px;margin-left: 0;">
     {% endfor %}
 </div>
 
@@ -53,6 +53,15 @@
 
 {% if rawdataset.experimentaldataset.experimental_condition.injection.all %}
 <hr>
+<div style="margin-left:20px;margin-top:20px">
+    <h4>Injection</h4>
+    {% for tr in rawdataset.experimentaldataset.experimental_condition.treatment.all %}
+        <div style="margin-left:20px;margin-top:10px">
+            {% if tr.name %}<strong>Name:</strong> {{tr.name}}<br>{% endif %}
+        </div>
+        <hr style="width: 100px;margin-left: 0;">
+    {% endfor %}
+</div>
 
 {% endif %}
 
