@@ -44,6 +44,13 @@
     {% for tr in rawdataset.experimentaldataset.experimental_condition.treatment.all %}
         <div style="margin-left:20px;margin-top:10px">
             {% if tr.name %}<strong>Name:</strong> {{tr.name}}<br>{% endif %}
+            {% if tr.type %}<strong>Type:</strong> {{tr.type}}<br>{% endif %}
+            {% if tr.developmental_stage %}<strong>Developmental Stage:</strong> {{tr.developmental_stage}}<br>{% endif %}
+            {% if tr.concentration %}<strong>Concentration:</strong> {{tr.concentration}}<br>{% endif %}
+            {% if tr.duration %}<strong>Duration:</strong> {{tr.duration}}<br>{% endif %}
+            {% if tr.solvent %}<strong>Solvent:</strong> {{tr.solvent}}<br>{% endif %}
+            {% if tr.temperature %}<strong>Temperature:</strong> {{tr.temperature}}<br>{% endif %}
+            {% if tr.description %}<strong>Description:</strong> {{tr.description}}<br>{% endif %}
         </div>
         <hr style="width: 100px;margin-left: 0;">
     {% endfor %}
@@ -55,9 +62,14 @@
 <hr>
 <div style="margin-left:20px;margin-top:20px">
     <h4>Injection</h4>
-    {% for tr in rawdataset.experimentaldataset.experimental_condition.treatment.all %}
+    {% for in in rawdataset.experimentaldataset.experimental_condition.injection.all %}
         <div style="margin-left:20px;margin-top:10px">
-            {% if tr.name %}<strong>Name:</strong> {{tr.name}}<br>{% endif %}
+            {% if in.name %}<strong>Name:</strong> {{in.name}}<br>{% endif %}
+            {% if in.type %}<strong>Type:</strong> {{in.type}}<br>{% endif %}
+            {% if in.developmental_stage %}<strong>Developmental Stage:</strong> {{in.developmental_stage}}<br>{% endif %}
+            {% if in.concentration %}<strong>Concentration:</strong> {{in.concentration}}<br>{% endif %}
+            {% if in.slim_id %}<strong>Slim ID:</strong> {{in.slim_id}}<br>{% endif %}
+            {% if in.description %}<strong>Description:</strong> {{in.description}}<br>{% endif %}
         </div>
         <hr style="width: 100px;margin-left: 0;">
     {% endfor %}
