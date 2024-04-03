@@ -171,14 +171,27 @@ class Sample(models.Model):
         ('zebrafish',    'Zebra fish'),
     )
 
+    CELL_TYPE = (
+
+        ('full_embryo', 'Full Embryo'),
+        ('PSM4','PSM4'),
+        ('PSM3','PSM3'),
+        ('PSM2','PSM2'),
+        ('TB','Tail bud'),
+        ('margin','Margin'),
+        ('shield','Shield'),
+        ('germ_ring','Germ Ring'),
+    )
+
     specie              = models.CharField(max_length=100, choices=SPECIE_TYPE, default='zebrafish', help_text='Type of animal(s) used for this experimental dataset.')
     developmental_stage = models.CharField(max_length=100, choices=DEV_STAGE, default='', help_text='Developmental stage')
-   # somite_stage        = models.CharField(max_length=100, blank=True, default='', help_text='Developmental stage')
-    #ADD temperature  as a treatment type
+    cell_type           = models.CharField(max_length=100, choices=CELL_TYPE, null=True, blank=True, default='full_embryo', help_text='Cell type')
     pyrat_crossing_id   = models.CharField(max_length=10, default='', help_text='"Pyrat crossing ID')
     mutation            = models.ManyToManyField(Mutation,  default='', help_text='mutation(s)', related_name='sample_mutation')
+    comments            = models.TextField(blank=True, max_length=2000,  default='', help_text="Enter comments if any")
     parent              = models.ManyToManyField(Parent, blank=True,  default='', help_text='Parents information (automatically filled from pyrat crossing ID)')
     date_of_crossing    = models.DateField(blank=True, null=True, help_text="Date of cross (automatically filled from pyrat crossing ID)")
+
 
     def __str__(self):
         """String for representing the Model object (in Admin site etc.)"""
