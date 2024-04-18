@@ -318,7 +318,7 @@ class Fixation(models.Model):
     )
 
     name     = models.CharField(max_length=200, default='', choices=FIXATION_NAME, help_text='Name of the fixation')
-    marker   = models.ManyToManyField(Marker, default='' help_text='Fixation markers')
+    marker   = models.ManyToManyField(Marker, default='', help_text='Fixation markers')
    #experimental_condition = models.ForeignKey(ExperimentalCondition, default='', on_delete=models.CASCADE)
 
 
