@@ -337,7 +337,7 @@ class ExperimentalCondition(models.Model):
     date       = models.DateField(blank=True, null=True, help_text="Date of the experiment")
     filled     = models.CharField(max_length=10, choices=BOOL_STATUS, default='False', help_text='Set to True when all experimental conditions are properly filled')
     comments   = models.TextField(blank=True, max_length=2000,  default='', help_text="Enter comments if any")
-    fixation   = models.ForeignKey(Fixation, blank=True, default='', on_delete=models.CASCADE)
+    #fixation   = models.ForeignKey(Fixation, blank=True, default='', on_delete=models.CASCADE)
     def __str__(self):
         """String for representing the Model object (in Admin site etc.)"""
         try:
