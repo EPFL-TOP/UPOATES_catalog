@@ -293,6 +293,37 @@ class InstrumentalCondition(models.Model):
 
 
 #___________________________________________________________________________________________
+class Marker(models.Model):
+
+    MARKER_TYPE = (
+        ('antibobies',  'antibobies'),
+        ('probe',       'probe'),
+    )
+
+    name              = models.CharField(max_length=200, default='', help_text='Name of the marker')
+    type              = models.CharField(max_length=100, choices=MARKER_TYPE, default='', help_text='Type of the marker')
+    concentration     = models.CharField(blank=True, max_length=100, default='', help_text='Concentration of the marker')
+    staining_duration = models.CharField(blank=True, max_length=100, default='', help_text='Staining duration of the marker')
+
+#___________________________________________________________________________________________
+class Fixation(models.Model):
+
+    FIXATION_NAME = (
+        ('ish-fluo',        'ISH-Fluo'),
+        ('ish-chromo',      'ISH-Chromo'),
+        ('ihc-fluo',        'IHC-Fluo'),
+        ('ihc-chromo',      'IHC-Chromo'),
+        ('ish-ihc-fluo',    'ISH-IHC-Fluo'),
+        ('hcr',             'HCR'),
+    )
+
+    name     = models.CharField(max_length=200, default='', choices=FIXATION_NAME, help_text='Name of the fixation')
+    marker   = models.ManyToManyField(Marker, default='' help_text='Fixation markers')
+   #experimental_condition = models.ForeignKey(ExperimentalCondition, default='', on_delete=models.CASCADE)
+
+
+
+#___________________________________________________________________________________________
 class ExperimentalCondition(models.Model):
     """Model representing the experimental condition of a given experimental dataset."""  
     BOOL_STATUS = (
@@ -306,8 +337,7 @@ class ExperimentalCondition(models.Model):
     date       = models.DateField(blank=True, null=True, help_text="Date of the experiment")
     filled     = models.CharField(max_length=10, choices=BOOL_STATUS, default='False', help_text='Set to True when all experimental conditions are properly filled')
     comments   = models.TextField(blank=True, max_length=2000,  default='', help_text="Enter comments if any")
-
-
+    fixation   = models.ForeignKey(Fixation, default='', on_delete=models.CASCADE)
     def __str__(self):
         """String for representing the Model object (in Admin site etc.)"""
         try:
@@ -317,3 +347,5 @@ class ExperimentalCondition(models.Model):
         
     class Meta:
         ordering = ("experimentaldataset__raw_dataset__data_type","experimentaldataset__raw_dataset__data_name")
+
+
