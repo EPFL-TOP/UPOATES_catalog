@@ -2,7 +2,7 @@ from django.contrib import admin
 from django import forms
 
 # Register your models here.
-from .models import Parent, Treatment, Injection, Sample, ExperimentalCondition, MutationGrade, MutationName, Mutation, InstrumentalCondition
+from .models import Parent, Treatment, Injection, Sample, ExperimentalCondition, MutationGrade, MutationName, Mutation, InstrumentalCondition, Fixation, Marker
 
 
 class ExperimentalConditionAdmin(admin.ModelAdmin):
@@ -19,6 +19,9 @@ admin.site.register(Injection)
 admin.site.register(Sample)
 admin.site.register(ExperimentalCondition, ExperimentalConditionAdmin)
 admin.site.register(InstrumentalCondition)
+admin.site.register(Fixation)
+admin.site.register(Marker)
+
 
 
 
