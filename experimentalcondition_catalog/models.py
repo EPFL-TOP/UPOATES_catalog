@@ -197,8 +197,8 @@ class Sample(models.Model):
         """String for representing the Model object (in Admin site etc.)"""
         #parent_lines = "("+", ".join(str(par) for par in self.parent_line.all())+")"
         mutations =  ", ".join("("+str(par)+")" for par in self.mutation.all())
-
-        return '{0}, {1}, {2}, {3}, {4}, {5}'.format(self.id, self.specie, self.developmental_stage, self.pyrat_crossing_id, mutations, self.experimentalcondition_set.all())
+        expds =  ", ".join("("+str(par.experimentaldataset.raw_dataset.data_name)+")" for par in self.experimentalcondition_set.all())
+        return '{0}, {1}, {2}, {3}, {4}, {5}'.format(self.id, self.specie, self.developmental_stage, self.pyrat_crossing_id, mutations, )
 
     class Meta:
         ordering = ["-id"] #("specie", "developmental_stage")
