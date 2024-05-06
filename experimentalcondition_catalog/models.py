@@ -198,7 +198,7 @@ class Sample(models.Model):
         #parent_lines = "("+", ".join(str(par) for par in self.parent_line.all())+")"
         mutations =  ", ".join("("+str(par)+")" for par in self.mutation.all())
 
-        return '{0}, {1}, {2}, {3}, {4}, {5}'.format(self.id, self.specie, self.developmental_stage, self.pyrat_crossing_id, mutations, self.experimentalconditionuser_set.all())
+        return '{0}, {1}, {2}, {3}, {4}, {5}'.format(self.id, self.specie, self.developmental_stage, self.pyrat_crossing_id, mutations, self.experimentalcondition_set.all())
 
     class Meta:
         ordering = ["-id"] #("specie", "developmental_stage")
