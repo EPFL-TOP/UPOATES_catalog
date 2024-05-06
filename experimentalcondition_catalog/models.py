@@ -198,7 +198,9 @@ class Sample(models.Model):
         #parent_lines = "("+", ".join(str(par) for par in self.parent_line.all())+")"
         mutations =  ", ".join(str(par) for par in self.mutation.all())
         mutations = "["+mutations+"]"
-        expds =  ", ".join("("+str(par.experimentaldataset.raw_dataset.data_name)+")" for par in self.experimentalcondition_set.all())
+        expds =  ", ".join(str(par.experimentaldataset.raw_dataset.data_name) for par in self.experimentalcondition_set.all())
+        expds = "["+expds+"]"
+
         return '{0}, {1}, {2}, {3}, {4}, {5}'.format(self.id, self.specie, self.developmental_stage, self.pyrat_crossing_id, mutations, expds)
 
     class Meta:
