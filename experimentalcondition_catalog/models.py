@@ -308,6 +308,9 @@ class Marker(models.Model):
     type              = models.CharField(max_length=100, choices=MARKER_TYPE, default='', help_text='Type of the marker')
     concentration     = models.CharField(blank=True, max_length=100, default='', help_text='Concentration of the marker')
     staining_duration = models.CharField(blank=True, max_length=100, default='', help_text='Staining duration of the marker')
+    
+    def __str__(self):
+        return '{0}, {1}, {2}, {3}'.format(self.name, self.type, self.concentration, self.staining_duration)
 
 #___________________________________________________________________________________________
 class Fixation(models.Model):
@@ -325,7 +328,9 @@ class Fixation(models.Model):
     marker   = models.ManyToManyField(Marker, default='', help_text='Fixation markers')
    #experimental_condition = models.ForeignKey(ExperimentalCondition, default='', on_delete=models.CASCADE)
 
-
+    def __str__(self):
+        marker =  ", ".join(str(par.name) for par in self.fixation_set.all())
+        return '{0}, [{1}]'.format(self.name, marker)
 
 #___________________________________________________________________________________________
 class ExperimentalCondition(models.Model):
