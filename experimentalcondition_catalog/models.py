@@ -329,7 +329,7 @@ class Fixation(models.Model):
    #experimental_condition = models.ForeignKey(ExperimentalCondition, default='', on_delete=models.CASCADE)
 
     def __str__(self):
-        marker =  ", ".join(str(par.name) for par in self.marker_set.all())
+        marker =  ", ".join(str(par.name) for par in self.marker.all())
         return '{0}, [{1}]'.format(self.name, marker)
 
 #___________________________________________________________________________________________
