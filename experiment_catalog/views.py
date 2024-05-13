@@ -15,7 +15,7 @@ from experiment_catalog.models import Experiment
 class ExperimentListView(generic.ListView):
     """Generic class-based view for a list of experiments."""
     model = Experiment
-    paginate_by = 10
+    paginate_by = 50
 
 #___________________________________________________________________________________________
 class ExperimentDetailView(generic.DetailView):
