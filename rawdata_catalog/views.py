@@ -22,6 +22,7 @@ from analysis_catalog.models import Analysis, AnalysisStep, AnalysisDataset
 
 import requests
 from requests.auth import HTTPBasicAuth
+import subprocess
 
 import accesskeys as accessk
 
@@ -205,6 +206,28 @@ def fill_analysis_steps():
     analyses = Analysis.objects.values()
 
 #___________________________________________________________________________________________
+def run_sudo_command(command):
+    # Run the command with sudo
+    process = subprocess.run(['sudo'] + command, check=True, text=True)
+    return process
+
+#___________________________________________________________________________________________
+def register_dataset():
+    register_command    = ['/data/miniconda3/bin/python3', '/home/helsens/Software/MetaDataHelper/register.py', '--input', '/mnt/nas_rcp/raw_data/microscopy/cell_culture/']
+    makesummary_command = ['/data/miniconda3/bin/python3', '/home/helsens/Software/MetaDataHelper/makesummary.py']
+
+    try:
+        # Run the register command
+        run_sudo_command(register_command)
+        print("register.py executed successfully")
+    
+        # Run the makesummary command
+        run_sudo_command(makesummary_command)
+        print("makesummary.py executed successfully")
+    except subprocess.CalledProcessError as e:
+        print(f"Error occurred: {e}")
+
+#___________________________________________________________________________________________
 def index(request):
     """View function for home page of site."""
     # Generate counts of some of the main objects
@@ -256,7 +279,8 @@ def rawdataset_catalog(request):
     #TO BE DONE ONCE AT THE BEGINING
     if 'reload_mutation' in request.POST:
         add_mutations()
-
+    if 'register' in request.POST:
+        register_dataset()
 
 
     result = RawDataset.objects.values()
